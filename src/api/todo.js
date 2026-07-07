@@ -55,3 +55,26 @@ export const deleteTodo = async (id) => {
 
   return response.json();
 };
+
+export const updateTodo = async (id, todoData) => {
+  const response = await fetch(
+    `https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+      body: JSON.stringify(todoData),
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    console.error(error);
+    throw new Error("Failed to update todo");
+  }
+
+  return response.json();
+};

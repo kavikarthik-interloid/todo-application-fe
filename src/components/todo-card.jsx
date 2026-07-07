@@ -1,12 +1,12 @@
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-// import { MdDoneOutline } from "react-icons/md";
 import { deleteTodo } from "../api/todo";
 
-function TodoCard({ todos, onTodoDeleted }) {
+function TodoCard({ todos, onTodoDeleted, onEdit, showNotification }) {
   const handleDelete = async (id) => {
     try {
       await deleteTodo(id);
+      showNotification("Todo deleted successfully!", "bg-red-600");
       onTodoDeleted();
     } catch (error) {
       console.error(error);
@@ -42,9 +42,9 @@ function TodoCard({ todos, onTodoDeleted }) {
           <div className="font-semibold">
             Tags:
             <p className="flex flex-wrap gap-2 mt-2">
-              {todo.tags?.map((tag) => (
+              {todo.tags?.map((tag, index) => (
                 <span
-                  key={tag}
+                      key={`${tag}-${index}`}
                   className="bg-blue-100 text-blue-700 p-1! rounded-sm text-sm"
                 >
                   {tag}
@@ -53,11 +53,11 @@ function TodoCard({ todos, onTodoDeleted }) {
             </p>
           </div>
           <div className="flex gap-2 pt-4 h-fit">
-            <button className="bg-gray-800 text-white p-2 rounded-sm">
+            <button onClick={() => onEdit(todo)} className="bg-gray-800 text-white p-2 rounded-sm">
               <FaRegEdit />
             </button>
-            <button className="bg-red-500 text-white p-2 rounded-sm">
-              <MdDelete onClick={() => handleDelete(todo.id)} />
+            <button onClick={() => handleDelete(todo.id)} className="bg-red-500 text-white p-2 rounded-sm">
+              <MdDelete  />
             </button>
           </div>
         </div>
