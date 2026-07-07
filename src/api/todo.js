@@ -67,7 +67,7 @@ export const updateTodo = async (id, todoData) => {
         "ngrok-skip-browser-warning": "true",
       },
       body: JSON.stringify(todoData),
-    }
+    },
   );
 
   if (!response.ok) {

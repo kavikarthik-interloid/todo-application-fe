@@ -44,7 +44,7 @@ function UpdateTodoForm({
       tags: formData.tags
         .split(",")
         .map((tag) => tag.trim())
-        .filter(Boolean),   
+        .filter(Boolean),
     };
 
     try {

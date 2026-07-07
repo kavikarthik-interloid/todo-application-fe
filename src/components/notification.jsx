@@ -1,5 +1,4 @@
 function Notification({ show, message, color }) {
-    
   return (
     <div
       className={`fixed top-5 right-5 px-5 py-3 rounded-lg shadow-lg text-white

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import TodoForm from "../components/create-todo";
 import UpdateTodoForm from "../components/update-todo";
-import TodoCard from "../components/todo-card"
+import TodoCard from "../components/todo-card";
 import { getTodo } from "../api/todo";
 import Notification from "../components/notification";
 
@@ -44,10 +44,7 @@ const Todo = () => {
 
   return (
     <>
-<TodoCard
-    todos={todos}
-    onEdit={setEditingTodo}
-/>
+      <TodoCard todos={todos} onEdit={setEditingTodo} />
       {editingTodo ? (
         <UpdateTodoForm
           editingTodo={editingTodo}

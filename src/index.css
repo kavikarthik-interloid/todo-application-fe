@@ -1,17 +1,16 @@
-
 @import "tailwindcss";
 
-@theme{
-    --breakpoint-mobile: 250px;
-    --breakpoint-tablet: 500px;
+@theme {
+  --breakpoint-mobile: 250px;
+  --breakpoint-tablet: 500px;
 }
 
-body{
-  width:100vw;
+body {
+  width: 100vw;
   height: 100vh;
 }
-div#root{
-  width:100%;
-  height:100vh;
+div#root {
+  width: 100%;
+  height: 100vh;
   background-color: rgb(255, 255, 255);
 }

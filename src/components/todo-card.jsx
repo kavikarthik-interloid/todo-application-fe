@@ -44,7 +44,7 @@ function TodoCard({ todos, onTodoDeleted, onEdit, showNotification }) {
             <p className="flex flex-wrap gap-2 mt-2">
               {todo.tags?.map((tag, index) => (
                 <span
-                      key={`${tag}-${index}`}
+                  key={`${tag}-${index}`}
                   className="bg-blue-100 text-blue-700 p-1! rounded-sm text-sm"
                 >
                   {tag}
@@ -53,11 +53,17 @@ function TodoCard({ todos, onTodoDeleted, onEdit, showNotification }) {
             </p>
           </div>
           <div className="flex gap-2 pt-4 h-fit">
-            <button onClick={() => onEdit(todo)} className="bg-gray-800 text-white p-2 rounded-sm">
+            <button
+              onClick={() => onEdit(todo)}
+              className="bg-gray-800 text-white p-2 rounded-sm"
+            >
               <FaRegEdit />
             </button>
-            <button onClick={() => handleDelete(todo.id)} className="bg-red-500 text-white p-2 rounded-sm">
-              <MdDelete  />
+            <button
+              onClick={() => handleDelete(todo.id)}
+              className="bg-red-500 text-white p-2 rounded-sm"
+            >
+              <MdDelete />
             </button>
           </div>
         </div>
