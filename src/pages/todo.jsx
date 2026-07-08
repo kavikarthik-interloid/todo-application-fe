@@ -42,13 +42,21 @@ const Todo = () => {
     }, 1500);
   };
 
+  const handleTodoUpdated = (updatedTodo) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === updatedTodo.id ? updatedTodo : todo,
+      ),
+    );
+  };
+
   return (
     <>
-      <TodoCard todos={todos} onEdit={setEditingTodo} />
       {editingTodo ? (
         <UpdateTodoForm
           editingTodo={editingTodo}
-          onTodoUpdated={fetchTodos}
+          onTodoUpdated={handleTodoUpdated}
+          onTodoDeleted={fetchTodos}
           clearEditing={() => setEditingTodo(null)}
           showNotification={showNotification}
         />
@@ -58,12 +66,26 @@ const Todo = () => {
           showNotification={showNotification}
         />
       )}
-
-      <Notification
-        show={notification.show}
-        message={notification.message}
-        color={notification.color}
-      />
+      <div
+        className={`transition duration-300  ${
+          editingTodo
+            ? "blur-[2px] bg-black/50 brightness-20 pointer-events-none select-none"
+            : "blur-0 brightness-100 scale-100"
+        }`}
+      >
+        <TodoCard
+          todos={todos}
+          onEdit={setEditingTodo}
+          onTodoDeleted={fetchTodos}
+          showNotification={showNotification}
+        />
+      </div>
+      {notification.show && (
+        <Notification
+          message={notification.message}
+          color={notification.color}
+        />
+      )}
     </>
   );
 };

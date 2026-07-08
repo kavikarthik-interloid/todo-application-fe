@@ -45,7 +45,7 @@ function TodoCard({ todos, onTodoDeleted, onEdit, showNotification }) {
               {todo.tags?.map((tag, index) => (
                 <span
                   key={`${tag}-${index}`}
-                  className="bg-blue-100 text-blue-700 p-1! rounded-sm text-sm"
+                  className="bg-blue-100 text-blue-500 p-1! rounded-sm text-sm"
                 >
                   {tag}
                 </span>

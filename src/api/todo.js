@@ -1,6 +1,6 @@
 export const getTodo = async () => {
   const response = await fetch(
-    "https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos?page=1&limit=20&sort_by=created_at&sort_order=desc",
+    "https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos?page=1&limit=60&sort_by=created_at&sort_order=desc",
     {
       method: "GET",
       headers: {
@@ -52,7 +52,6 @@ export const deleteTodo = async (id) => {
   if (!response.ok) {
     throw new Error("Failed to delete todo");
   }
-
   return response.json();
 };
 

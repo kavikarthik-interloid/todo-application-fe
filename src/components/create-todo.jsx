@@ -36,7 +36,7 @@ function TodoForm({ onTodoCreated, showNotification }) {
 
   return (
     <div className="max-w-6xl mx-auto pt-10!">
-      <h2 className="text-center font-bold text-xl"> CREATE TO-DO </h2>
+      <h2 className="bg-white w-fit mx-auto rounded-lg shadow-md py-2 px-3 text-center text-blue-500 font-bold text-xl"> CREATE TO-DO </h2>
       <form
         onSubmit={handleSubmit}
         className="w-full grid tablet:grid-cols-2 p-5 gap-y-4 gap-x-5"
@@ -134,7 +134,7 @@ function TodoForm({ onTodoCreated, showNotification }) {
         <div className="col-span-full flex justify-center mt-4">
           <button
             type="submit"
-            className="w-40 p-2 bg-blue-600 text-white border border-black rounded-md hover:bg-blue-700 transition-colors"
+            className="w-40 py-2 px-1 bg-blue-600 shadow-md text-white rounded-md hover:bg-blue-700 transition-colors"
           >
             Create Todo
           </button>
