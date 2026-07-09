@@ -4,6 +4,8 @@ import UpdateTodoForm from "../components/update-todo";
 import TodoCard from "../components/todo-card";
 import { getTodo } from "../api/todo";
 import Notification from "../components/notification";
+import UserInfo from "../components/user-info";
+import DeleteForm from "../components/delete-todo";
 
 const Todo = () => {
   const [todos, setTodos] = useState([]);
@@ -13,6 +15,8 @@ const Todo = () => {
     message: "",
     color: "bg-green-600",
   });
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [deletingTodo, setDeletingTodo] = useState(null);
 
   const fetchTodos = async () => {
     try {
@@ -56,30 +60,39 @@ const Todo = () => {
         <UpdateTodoForm
           editingTodo={editingTodo}
           onTodoUpdated={handleTodoUpdated}
-          onTodoDeleted={fetchTodos}
           clearEditing={() => setEditingTodo(null)}
           showNotification={showNotification}
         />
       ) : (
-        <TodoForm
-          onTodoCreated={fetchTodos}
+        showCreateForm && (
+          <TodoForm
+            onTodoCreated={fetchTodos}
+            showNotification={showNotification}
+            onClose={() => setShowCreateForm(false)}
+          />
+        )
+      )}
+      {deletingTodo && (
+        <DeleteForm
+          todo={deletingTodo}
+          onClose={() => setDeletingTodo(null)}
+          onDeleted={fetchTodos}
           showNotification={showNotification}
         />
       )}
-      <div
-        className={`transition duration-300  ${
-          editingTodo
-            ? "blur-[2px] bg-black/50 brightness-20 pointer-events-none select-none"
-            : "blur-0 brightness-100 scale-100"
-        }`}
-      >
+        <UserInfo
+          profileImage="/profileImage.avif"
+          username="User"
+          greetings="welcome,Lets me today Awesome"
+          onCreateTask={() => setShowCreateForm(true)}
+        />
         <TodoCard
           todos={todos}
           onEdit={setEditingTodo}
           onTodoDeleted={fetchTodos}
           showNotification={showNotification}
+          onDelete={setDeletingTodo}
         />
-      </div>
       {notification.show && (
         <Notification
           message={notification.message}

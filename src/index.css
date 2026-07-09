@@ -1,17 +1,34 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 @import "tailwindcss";
 
 @theme {
   --breakpoint-mobile: 250px;
+  --breakpoint-sm: 400px;
   --breakpoint-tablet: 500px;
+  --font-inter: "Inter", sans-serif;
 }
-
+html {
+  width: 100%;
+  height: 100dvh;
+}
 body {
   width: 100%;
-  height: 100vh;
-  
+  height: 100%;
 }
 div#root {
   width: 100%;
   height: 100%;
-  background-color: rgb(255, 255, 255);
+  background-color: #f0f5fb;
+}
+select:required:invalid {
+  color: gray;
+}
+option[value=""][disabled] {
+  display: none;
+}
+option {
+  color: black;
+}
+.radius{
+  border-radius:6px;
 }

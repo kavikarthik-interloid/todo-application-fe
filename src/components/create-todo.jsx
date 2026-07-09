@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { createTodo } from "../api/todo";
+import { IoIosClose } from "react-icons/io";
 
-function TodoForm({ onTodoCreated, showNotification }) {
+function TodoForm({ onTodoCreated, showNotification, onClose }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -32,18 +33,24 @@ function TodoForm({ onTodoCreated, showNotification }) {
     await onTodoCreated();
 
     showNotification("Todo Created Successfully!", "bg-green-600");
+    onClose();
   };
 
   return (
-    <div className="max-w-6xl mx-auto pt-10!">
-      <h2 className="bg-white w-fit mx-auto rounded-lg shadow-md py-2 px-3 text-center text-blue-500 font-bold text-xl"> CREATE TO-DO </h2>
+    <>
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300"/>
+    <div className="fixed top-50 max-w-4xl mx-auto shadow-md w-3/4 h-112 p-5! inset-0 flex flex-col items-center backdrop-blur-md justify-start bg-white rounded-xl z-1 ">
+      <h2 className="w-full py-2 px-3 text-blue-500 text-center font-bold text-xl underline decoration-blue-400 underline-offset-8 font-inter">
+        {" "}
+        Create TO-DO{" "}
+      </h2>
       <form
         onSubmit={handleSubmit}
-        className="w-full grid tablet:grid-cols-2 p-5 gap-y-4 gap-x-5"
+        className="w-full grid grid-cols-2 p-5 gap-y-4 gap-x-5 font-inter"
       >
         <div className="flex flex-col gap-1">
           <label htmlFor="title" className="font-medium">
-            Title:
+            Title
           </label>
           <input
             id="title"
@@ -52,12 +59,12 @@ function TodoForm({ onTodoCreated, showNotification }) {
             value={formData.title}
             onChange={handleChange}
             placeholder="Enter Title"
-            className="p-5 border border-black rounded-md"
+            className="p-2 border border-gray-300 rounded-md text-sm"
           />
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="description" className="font-medium">
-            Description:
+            Description
           </label>
           <textarea
             id="description"
@@ -66,12 +73,12 @@ function TodoForm({ onTodoCreated, showNotification }) {
             value={formData.description}
             onChange={handleChange}
             placeholder="Enter description"
-            className="p-2 border border-black rounded-md"
+            className="mobile:p-1 p-2 border border-gray-300 rounded-md text-sm"
           />
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="priority" className="font-medium">
-            Priority:
+            Priority
           </label>
 
           <select
@@ -79,19 +86,19 @@ function TodoForm({ onTodoCreated, showNotification }) {
             name="priority"
             value={formData.priority}
             onChange={handleChange}
-            className="p-4 border border-black rounded-md"
+            className="p-2  border border-gray-300 rounded-md text-sm"
           >
             <option value="" disabled>
               Select Option
             </option>
-            <option value="LOW">LOW</option>
-            <option value="MEDIUM">MEDIUM</option>
-            <option value="HIGH">HIGH</option>
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
           </select>
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="due-date" className="font-medium">
-            Due-Date:
+            Due-Date
           </label>
           <input
             id="due-date"
@@ -100,12 +107,12 @@ function TodoForm({ onTodoCreated, showNotification }) {
             value={formData.due_date}
             onChange={handleChange}
             placeholder="Enter date"
-            className="p-4 border border-black rounded-md"
+            className="p-2  border border-gray-300 rounded-md text-sm"
           />
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="category" className="font-medium">
-            Category:
+            Category
           </label>
           <input
             id="category"
@@ -114,12 +121,12 @@ function TodoForm({ onTodoCreated, showNotification }) {
             value={formData.category}
             onChange={handleChange}
             placeholder="Enter category"
-            className="p-4 border border-black rounded-md"
+            className="p-2  border border-gray-300 rounded-md text-sm"
           />
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="tags" className="font-medium">
-            Tags:
+            Tags
           </label>
           <input
             id="tags"
@@ -128,19 +135,34 @@ function TodoForm({ onTodoCreated, showNotification }) {
             value={formData.tags}
             onChange={handleChange}
             placeholder="Enter tags"
-            className="p-4 border border-black rounded-md"
+            className="p-2  border border-gray-300 rounded-md text-sm"
           />
         </div>
-        <div className="col-span-full flex justify-center mt-4">
+        <div className="col-span-full flex justify-center gap-4 mt-4">
           <button
             type="submit"
-            className="w-40 py-2 px-1 bg-blue-600 shadow-md text-white rounded-md hover:bg-blue-700 transition-colors"
+            className="w-30 py-2 radius px-1 bg-blue-600 shadow-md text-white hover:bg-blue-700"
           >
-            Create Todo
+            Create
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-30 p-2 radius bg-blue-600 text-white shadow-md hover:bg-blue-700"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-fit top-[-10px] right-[-10px] absolute p-2 rounded-full bg-blue-600 text-white shadow-md hover:bg-blue-700 transition-colors"
+          >
+            <IoIosClose />
           </button>
         </div>
       </form>
     </div>
+    </>
   );
 }
 
