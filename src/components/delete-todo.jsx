@@ -14,7 +14,7 @@ const DeleteForm = ({ todo, onClose, onDeleted, showNotification }) => {
   };
   return (
     <>
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" />
+      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" z-0/>
       <div className="fixed top-75 max-w-xl mx-auto font-inter shadow-md w-1/2 h-fit p-5! gap-10 inset-0 flex flex-col items-center backdrop-blur-md justify-center bg-white rounded-lg z-1 ">
         <h2 className="w-full relative py-2 px-3 text-blue-500 font-bold text-center text-xl underline decoration-blue-400 underline-offset-8 font-inter">
           {" "}

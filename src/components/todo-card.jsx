@@ -1,14 +1,14 @@
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-function TodoCard({ todos, onEdit, onDelete }) {
+function TodoCard({ todos, onEdit, onDelete}) {
   const priorityStyles = {
     LOW: "bg-green-100 text-green-700 border-green-300",
     MEDIUM: "bg-yellow-100 text-yellow-700 border-yellow-300",
     HIGH: "bg-red-100 text-red-700 border-red-300 ",
   };
+
   return (
-  
     <div className="w-full h-fit mx-auto p-5! grid mobile:grid-cols-1 tablet:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 bg-[#f0f5fb]">
       {todos.map((todo) => (
         <div
@@ -31,7 +31,7 @@ function TodoCard({ todos, onEdit, onDelete }) {
           <p className="font-normal"> {todo.description}</p>
           <span className="font-medium"> {todo.due_date}</span>
           <p className="font-normal"> {todo.category}</p>
-          <p className="flex flex-wrap gap-2 mt-2">
+          <p className="flex flex-wrap gap-2 mt-2 mb-2">
             {todo.tags?.map((tag, index) => (
               <span
                 key={`${tag}-${index}`}
@@ -41,6 +41,9 @@ function TodoCard({ todos, onEdit, onDelete }) {
               </span>
             ))}
           </p>
+            <button
+              className=" bg-green-500 text-white text-sm px-2 py-1 rounded text-center"
+            > {todo.completed? "completed":"pending" }</button>
           <div className="flex gap-2 pt-4 h-fit">
             <button
               onClick={() => onEdit(todo)}

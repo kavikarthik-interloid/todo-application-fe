@@ -53,7 +53,7 @@ function UpdateTodoForm({
       const updatedTodo = await updateTodo(editingTodo.id, payload);
       onTodoUpdated(updatedTodo.data);
       clearEditing();
-      showNotification("Todo Updated!", "bg-blue-600");
+      showNotification("Todo Updated!","bg-blue-600");
     } catch (error) {
       console.error(error);
     }
@@ -61,7 +61,7 @@ function UpdateTodoForm({
 
   return (
     <>
-       <div className="fixed  inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" z-0 />
+       <div className="fixed  inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 z-0"  />
       <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-4xl bg-white rounded-xl shadow-xl p-6 z-1 ">
         <h2 className="w-full py-2 px-3 relative text-blue-500 font-bold text-center text-xl underline decoration-blue-400 underline-offset-8 font-inter">
           {" "}
@@ -175,7 +175,6 @@ function UpdateTodoForm({
             >
               Update
             </button>
-
             <button
               type="button"
               onClick={clearEditing}
