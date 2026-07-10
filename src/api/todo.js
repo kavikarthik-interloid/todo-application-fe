@@ -9,7 +9,7 @@ export const getTodo = async () => {
       },
     },
   );
-
+  
   if (!response.ok) {
     throw new Error("Failed to fetch todos");
   }

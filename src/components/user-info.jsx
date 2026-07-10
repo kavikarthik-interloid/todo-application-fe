@@ -2,7 +2,6 @@ import { FaPlus } from "react-icons/fa6";
 
 const UserInfo = ({ profileImage, username, greetings }) => {
   return (
-    <>
       <div className="relative flex items-center justify-center p-5 sm:pb-1 shadow-lg h-fit w-full bg-white">
         <div className="w-full flex flex-col gap-4 sm:flex-row justify-between items-center">
           <div className="flex gap-2 items-center ">
@@ -22,7 +21,6 @@ const UserInfo = ({ profileImage, username, greetings }) => {
           </button>
         </div>
       </div>
-    </>
   );
 };
 

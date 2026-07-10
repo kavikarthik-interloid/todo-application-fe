@@ -3,6 +3,28 @@ import { createTodo } from "../api/todo";
 import { IoClose } from "react-icons/io5";
 
 function TodoForm() {
+  const [formdata, setFormdata] = useState({
+    id: "",
+    title: "",
+    priority: "",
+    due_date: "",
+    category: "",
+    tags: "",
+    completed: false,
+  });
+
+  const createForm = async () => {};
+
+  createForm();
+
+  const handleChange = (e) => {
+    setFormdata(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    setFormdata(e)
+  };
+
   return (
     <>
       <div className="fixed  inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 z-0" />
@@ -19,6 +41,7 @@ function TodoForm() {
               id="title"
               type="text"
               name="title"
+              onChange={handleChange}
               placeholder="Enter Title"
               className="p-2 border border-gray-300 rounded-md text-sm"
             />
@@ -31,7 +54,8 @@ function TodoForm() {
             <select
               id="priority"
               name="priority"
-              className="p-2  border border-gray-300 rounded-md text-sm"
+              onChange={handleChange}
+              className="p-2 border border-gray-300 rounded-md text-sm"
             >
               <option value="" disabled>
                 Select Option
@@ -114,6 +138,7 @@ function TodoForm() {
             </button>
             <button
               type="submit"
+              onClick={handleSubmit}
               className="w-30 py-2 radius px-1 bg-blue-600 shadow-md text-white hover:bg-blue-700"
             >
               Create
