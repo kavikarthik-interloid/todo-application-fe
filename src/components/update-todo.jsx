@@ -1,16 +1,45 @@
 import { useState, useEffect } from "react";
 import { updateTodo } from "../api/todo";
 import { IoClose } from "react-icons/io5";
+import { getTodoId } from "../api/todo";
 
-function UpdateTodoForm({}) {
+function UpdateTodoForm({ isOpen, myData, editTodo }) {
+  const [formdata, setFormdata] = useState(myData);
+  const handleChange = (e) => {
+    setFormdata((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    const updated = {
+      ...formdata,
+      tags: formdata.tags.split(",").map((tag) => tag),
+      completed: formdata.completed,
+    };
+    // console.log(updated, "djasfsd");
+    try {
+      await updateTodo(updated.id, updated);
+      editTodo();
+      isOpen(false);
+    } catch(error){
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="fixed  inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 z-0" />
-      <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-4xl bg-white rounded-xl shadow-xl p-6 z-1 ">
+      <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-4xl bg-white rounded-xl shadow-xl p-6 z-1">
         <h2 className="w-full py-2 px-3 relative text-blue-500 font-bold text-center text-xl underline decoration-blue-400 underline-offset-8 font-inter">
           Update TO-DO
         </h2>
-        <form className="w-full grid md:grid-cols-2 gap-y-4 gap-x-5 font-inter">
+        <form
+          className="w-full grid md:grid-cols-2 gap-y-4 gap-x-5 font-inter"
+          onSubmit={handleSubmit}
+        >
           <div className="flex flex-col gap-1">
             <label htmlFor="title" className="font-medium ">
               Title
@@ -19,6 +48,8 @@ function UpdateTodoForm({}) {
               id="title"
               type="text"
               name="title"
+              onChange={handleChange}
+              value={formdata.title}
               placeholder="Enter Title"
               className="py-2 px-4 w-full border border-gray-300 rounded-md text-sm"
             />
@@ -31,6 +62,8 @@ function UpdateTodoForm({}) {
               id="description"
               type="text"
               name="description"
+              value={formdata.description}
+              onChange={handleChange}
               placeholder="Enter description"
               className="py-2 px-4 w-full border border-gray-300 rounded-md text-sm"
             />
@@ -43,6 +76,8 @@ function UpdateTodoForm({}) {
             <select
               id="priority"
               name="priority"
+              value={formdata.priority}
+              onChange={handleChange}
               className="py-2 px-4 w-full border border-gray-300 rounded-md text-sm"
             >
               <option value="" disabled selected>
@@ -61,9 +96,30 @@ function UpdateTodoForm({}) {
               id="due-date"
               type="date"
               name="due_date"
+              value={formdata.due_date}
+              onChange={handleChange}
               placeholder="Enter date"
               className="py-2 px-4 w-full border border-gray-300 rounded-md text-sm"
             />
+          </div>
+          <div className="mobile:w-full tablet:w-full flex flex-col gap-1">
+            <label htmlFor="priority" className="font-medium">
+              Status
+            </label>
+
+            <select
+              id="completed"
+              name="completed"
+              value={formdata.completed}
+              onChange={handleChange}
+              className="py-2 px-4 w-full border border-gray-300 rounded-md text-sm"
+            >
+              <option value="" disabled selected>
+                Select Option
+              </option>
+              <option value={true}>Completed</option>
+              <option value={false}>pending</option>
+            </select>
           </div>
           <div className="mobile:w-full tablet:w-full flex flex-col gap-1">
             <label htmlFor="category" className="font-medium">
@@ -73,6 +129,8 @@ function UpdateTodoForm({}) {
               id="category"
               type="text"
               name="category"
+              value={formdata.category}
+              onChange={handleChange}
               placeholder="Enter category"
               className="py-2 px-4 w-full border border-gray-300 rounded-md text-sm"
             />
@@ -85,6 +143,8 @@ function UpdateTodoForm({}) {
               id="tags"
               type="text"
               name="tags"
+              value={formdata.tags}
+              onChange={handleChange}
               placeholder="Enter tags"
               className="py-2 px-4 w-full border border-gray-300 rounded-md text-sm"
             />
@@ -92,18 +152,25 @@ function UpdateTodoForm({}) {
           <div className="mobile:w-full tablet:w-full col-span-full flex justify-end gap-4 mt-4 font-bold">
             <button
               type="button"
+              onClick={() => {
+                isOpen(false);
+              }}
               className="w-30 py-2 px-0 radius bg-gray-50 text-blue-600 shadow-sm hover:bg-gray-100"
             >
               Cancel
             </button>
             <button
               type="submit"
+              onClick={handleSubmit}
               className="w-30 p-2 radius bg-blue-600 text-white shadow-md hover:bg-blue-700"
             >
               Update
             </button>
             <button
               type="button"
+              onClick={() => {
+                isOpen(false);
+              }}
               className="w-fit top-0 rounded-sm right-0 absolute p-2  text-blue-600 hover:text-blue-700  transition-colors"
             >
               <IoClose />

@@ -1,6 +1,8 @@
+import Todo from "../pages/todo";
+
 export const getTodo = async () => {
   const response = await fetch(
-    "https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos?page=1&limit=60&sort_by=created_at&sort_order=desc",
+    "https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos?page=1&limit=60&sort_by=created_at&sort_order=asc",
     {
       method: "GET",
       headers: {
@@ -16,7 +18,26 @@ export const getTodo = async () => {
   return response.json();
 };
 
+export const getTodoId = async (id) => {
+  const response = await fetch(
+    `https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos/${id}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+    },
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch todos");
+  }
+  return response.json();
+};
+
 export const createTodo = async (todoData) => {
+  console.log(todoData
+  )
   const response = await fetch(
     "https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos",
     {
@@ -58,6 +79,30 @@ export const deleteTodo = async (id) => {
 export const updateTodo = async (id, todoData) => {
   const response = await fetch(
     `https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+      body: JSON.stringify(todoData),
+    },
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    console.error(error);
+    throw new Error("Failed to update todo");
+  }
+
+  return response.json();
+};
+
+
+export const completeTodo = async (id, ) => {
+  const response = await fetch(
+    `https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos/${id}/status`,
     {
       method: "PATCH",
       headers: {

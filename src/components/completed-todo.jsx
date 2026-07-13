@@ -1,22 +1,25 @@
 import { useState } from "react";
-import { deleteTodo } from "../api/todo";
 import { IoClose } from "react-icons/io5";
+import { completeTodo } from "../api/todo";
 
-const DeleteForm = ({ isOpen, myData, deleteCard }) => {
-  const handleDelete = async () => {
-    await deleteTodo(myData.id);
-    deleteCard();
-    isOpen(false);
+const completedTodo = ({ isOpen, myData }) => {
+  console.log(myData, "dasda");
+
+  const submitComplete = async () => {
+    try {
+      await completeTodo(myData.id, {status:true});
+    } catch (error) {
+      console.log(error);
+    }
   };
-
   return (
     <>
       <div className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 z-0" />
       <div className="fixed top-75 max-w-xl mx-auto font-inter shadow-md w-1/2 h-fit p-5! gap-10 inset-0 flex flex-col items-center backdrop-blur-md justify-center bg-white rounded-lg z-1 ">
         <h2 className="w-full relative py-2 px-3 text-blue-500 font-bold text-center text-xl underline decoration-blue-400 underline-offset-8 font-inter">
-          Delete TO-DO
+          Complete TO-DO
         </h2>
-        <p className="text-md">Are you sure you want to delete this todo?</p>
+        <p className="text-md">Are you sure you want to complete this todo?</p>
         <div className="flex gap-4">
           <button
             onClick={() => isOpen(false)}
@@ -25,8 +28,8 @@ const DeleteForm = ({ isOpen, myData, deleteCard }) => {
             cancel
           </button>
           <button
-            onClick={handleDelete}
-            className="w-30 p-2 radius bg-red-600 text-white shadow-md hover:bg-red-700 font-bold"
+            onClick={submitComplete}
+            className="w-30 p-2 radius bg-green-600 text-white shadow-md hover:bg-green-700 font-bold"
           >
             confirm
           </button>
@@ -43,4 +46,4 @@ const DeleteForm = ({ isOpen, myData, deleteCard }) => {
   );
 };
 
-export default DeleteForm;
+export default completedTodo;

@@ -1,34 +1,50 @@
 import { useState } from "react";
-import { createTodo } from "../api/todo";
+import { createTodo, getTodo } from "../api/todo";
 import { IoClose } from "react-icons/io5";
+import UserInfo from "./user-info";
+import { FaBullseye } from "react-icons/fa";
 
-function TodoForm() {
-  const [formdata, setFormdata] = useState({
+function TodoForm({ isOpen, createList }) {
+  const initialState = {
     id: "",
     title: "",
     priority: "",
     due_date: "",
     category: "",
-    tags: "",
+    tags: [],
     completed: false,
-  });
+  };
 
-  const createForm = async () => {};
-
-  createForm();
-
+  const [formdata, setFormdata] = useState(initialState);
   const handleChange = (e) => {
-    setFormdata(e.target.value);
+    setFormdata((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const handleSubmit = () => {
-    setFormdata(e)
+  const handleSubmit = async (e) => {
+    console.log("formdata", formdata);
+    const payload = {
+      ...formdata,
+      tags: formdata.tags.split(","),
+      completed: formdata.completed,
+    };
+    e.preventDefault();
+    await createTodo(payload);
+    createList();
+    isOpen(false);
+    try {
+      setFormdata(initialState);
+    } catch (error) {
+      console.log("failed", error);
+    }
+    console.log("after", formdata);
   };
-
   return (
     <>
       <div className="fixed  inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 z-0" />
-      <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-4xl bg-white rounded-xl shadow-xl p-6 z-1 ">
+      <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-4xl bg-white rounded-xl shadow-xl p-6 z-1">
         <h2 className="w-full py-2 px-3 relative text-blue-500 text-center font-bold text-xl underline decoration-blue-400 underline-offset-8 font-inter">
           Create TO-DO
         </h2>
@@ -50,14 +66,13 @@ function TodoForm() {
             <label htmlFor="priority" className="font-medium">
               Priority
             </label>
-
             <select
               id="priority"
               name="priority"
               onChange={handleChange}
               className="p-2 border border-gray-300 rounded-md text-sm"
             >
-              <option value="" disabled>
+              <option value="" disabled selected>
                 Select Option
               </option>
               <option value="LOW">Low</option>
@@ -73,6 +88,7 @@ function TodoForm() {
               id="due-date"
               type="date"
               name="due_date"
+              onChange={handleChange}
               placeholder="Enter date"
               className="p-2  border border-gray-300 rounded-md text-sm"
             />
@@ -85,6 +101,7 @@ function TodoForm() {
               id="category"
               type="text"
               name="category"
+              onChange={handleChange}
               placeholder="Enter category"
               className="p-2  border border-gray-300 rounded-md text-sm"
             />
@@ -98,6 +115,7 @@ function TodoForm() {
               type="text"
               name="tags"
               placeholder="Enter tags"
+              onChange={handleChange}
               className="p-2 border border-gray-300 rounded-md text-sm"
             />
           </div>
@@ -108,13 +126,15 @@ function TodoForm() {
             <select
               id="completed"
               name="completed"
+              value={formdata.completed}
+              onChange={handleChange}
               className="p-2  border border-gray-300 rounded-md text-sm"
             >
-              <option value="" disabled>
+              <option value="" disabled selected>
                 Select Option
               </option>
-              <option value="Completed">completed</option>
-              <option value="Pending">Pending</option>
+              <option value={true}>completed</option>
+              <option value={false}>Pending</option>
             </select>
           </div>
           <div className="flex flex-col gap-1">
@@ -125,6 +145,7 @@ function TodoForm() {
               id="description"
               type="text"
               name="description"
+              onChange={handleChange}
               placeholder="Enter description"
               className="mobile:p-1 p-2 border border-gray-300 rounded-md text-sm"
             />
@@ -132,6 +153,9 @@ function TodoForm() {
           <div className="col-span-full flex  justify-end gap-4 mt-4 font-bold">
             <button
               type="button"
+              onClick={() => {
+                isOpen(false);
+              }}
               className="w-30 p-2 radius bg-gray-50 text-blue-600 shadow-sm hover:bg-gray-100"
             >
               Cancel
@@ -143,7 +167,11 @@ function TodoForm() {
             >
               Create
             </button>
+
             <button
+              onClick={() => {
+                isOpen(false);
+              }}
               type="button"
               className="w-fit top-0 rounded-sm right-0 absolute p-2  text-blue-600 hover:text-blue-700  transition-colors"
             >
