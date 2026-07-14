@@ -1,9 +1,34 @@
-import React from "react";
-import TodoCard from "../components/todo-card";
-// import { getTodo } from "../api/todo";
+import TodoList from "../components/todo-list";
+import CreateTodo from "../components/create-todo";
+import { useEffect, useState } from "react";
+import { getTodos } from "../api/todo";
 
-const home = () => {
-  return <TodoCard />;
+const Home = () => {
+  const [showForm, setShowForm] = useState(false);
+  const [todoList, setTodoList] = useState([]);
+
+  const handleForm = () => {
+    setShowForm(true);
+  };
+
+  const fetchtodos = async () => {
+    const response = await getTodos();
+    setTodoList(response.data.items);
+  };
+
+  useEffect(() => {
+    fetchtodos();
+  }, []);
+
+  return (
+    <>
+      <TodoList todoList={todoList} />
+
+      {showForm && <CreateTodo fetchtodos={fetchtodos} />}
+
+      <button onClick={handleForm}> Create </button>
+    </>
+  );
 };
 
-export default home;
+export default Home;
