@@ -1,14 +1,13 @@
 import { CompleteTodo } from "../api/todo";
 
-const CompleteTask = ({ setIsComplete, singleData, completedTodo}) => {
- 
+const CompleteTask = ({ setIsComplete, singleData, fetchtodos }) => {
   const handleComplete = async (e) => {
     e.preventDefault();
     try {
-        const value = await CompleteTodo(singleData.id, singleData);
-        console.log(value);
-        completedTodo()
-    }catch (error) {
+      await CompleteTodo(singleData.id, { completed: true });
+      setIsComplete();
+      fetchtodos();
+    } catch (error) {
       console.log(error, "error");
     }
   };

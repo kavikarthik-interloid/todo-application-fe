@@ -3,13 +3,9 @@ import { DeleteTodo } from "../api/todo";
 const DeleteCurrentTodo = ({ singleData, fetchtodos, setIsDelete }) => {
   const handleDelete = async (e) => {
     const value = singleData.id;
-    //  console.log(value)
     e.preventDefault();
     try {
-      const response = await DeleteTodo(value);
-      //   console.log(value, "adasd")
-      //   await DeleteCurrentTodo(value);
-      console.log(response);
+      await DeleteTodo(value);
       fetchtodos();
       setIsDelete();
     } catch (error) {

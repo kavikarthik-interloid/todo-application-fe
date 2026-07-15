@@ -3,7 +3,7 @@ import UpdateTodo from "../components/update-todo";
 import DeleteCurrentTodo from "../components/delete-todo";
 import CompleteTask from "../components/complete-task";
 
-const TodoList = ({ pendingTodo, fetchtodos, completedTodo }) => {
+const TodoList = ({ pendingTodo, fetchtodos }) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [singleData, setSingleData] = useState();
   const [isDelete, setIsDelete] = useState(false);
@@ -13,7 +13,7 @@ const TodoList = ({ pendingTodo, fetchtodos, completedTodo }) => {
     setIsUpdate(true);
     setSingleData(todo);
   };
-  
+
   const showDeleteForm = (todo) => {
     setIsDelete(true);
     setSingleData(todo);
@@ -26,6 +26,8 @@ const TodoList = ({ pendingTodo, fetchtodos, completedTodo }) => {
 
   return (
     <>
+      {" "}
+      <h1>Todo List</h1>
       {pendingTodo.map((item) => (
         <div key={item.id}>
           <span>{item.title}</span>
@@ -61,8 +63,8 @@ const TodoList = ({ pendingTodo, fetchtodos, completedTodo }) => {
       {isComplete && (
         <CompleteTask
           setIsComplete={setIsComplete}
+          fetchtodos={fetchtodos}
           singleData={singleData}
-          completedTodo={completedTodo}
         />
       )}
     </>

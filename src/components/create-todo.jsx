@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createTodo } from "../api/todo";
 
-const CreateTodo = ({ fetchtodos, setShowCreateForm }) => {
+const CreateTodo = ({ fetchtodos, setIsCreate }) => {
   const initialState = {
     title: "",
     description: "",
@@ -18,7 +18,6 @@ const CreateTodo = ({ fetchtodos, setShowCreateForm }) => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
-    console.log(formData);
   };
 
   const handleClick = async (e) => {
@@ -33,7 +32,7 @@ const CreateTodo = ({ fetchtodos, setShowCreateForm }) => {
       if (response.success) {
         setFormData(initialState);
         fetchtodos();
-        setShowCreateForm();
+        setIsCreate();
       }
     } catch (err) {
       console.log("err", err);
@@ -42,7 +41,7 @@ const CreateTodo = ({ fetchtodos, setShowCreateForm }) => {
 
   return (
     <>
-      <h2> Create-Todo</h2>
+      <h2> Create-Todo </h2>
       <form onSubmit={handleClick}>
         <label> Title </label>
         <input
@@ -108,7 +107,7 @@ const CreateTodo = ({ fetchtodos, setShowCreateForm }) => {
           <option value={false}> Pending </option>
         </select>
         <button type="submit">Create Todo</button>
-        <button onClick={() => setShowCreateForm(false)}>cancel</button>
+        <button onClick={() => setIsCreate(false)}> Cancel</button>
       </form>
     </>
   );

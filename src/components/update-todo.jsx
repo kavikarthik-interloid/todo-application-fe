@@ -10,8 +10,6 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
       [e.target.name]: e.target.value,
     }));
   };
-    console.log("updateData",updateData);
-
   const handleClick = async (e) => {
     e.preventDefault();
     const updated = {
@@ -19,7 +17,6 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
       tags: updateData.tags.split(","),
       completed: !!updateData.completed,
     };
-    // console.log("adwqad",updated)
     await updateTodo(updated.id, updated);
     fetchtodos();
     setIsUpdate();
@@ -27,7 +24,7 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
   return (
     <>
       <h2> Update-Todo</h2>
-      <form>
+      <form onSubmit={handleClick}>
         <label> Title </label>
         <input
           name="title"
@@ -91,10 +88,7 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
           <option value={true}> completed </option>
           <option value={false}> Pending </option>
         </select>
-        <button type="submit" onClick={handleClick}>
-          {" "}
-          Update Todo{" "}
-        </button>
+        <button type="submit"> Update Todo </button>
         <button onClick={() => setIsUpdate(false)}> Cancel </button>
       </form>
     </>

@@ -1,7 +1,7 @@
 const CompletedTodoList = ({ completedTodo }) => {
   return (
     <>
-    <h1> Completed Todo List </h1>
+      <h1> Completed Todo List </h1>
       {completedTodo.map((item) => (
         <div key={item.id}>
           <span>{item.title}</span>
