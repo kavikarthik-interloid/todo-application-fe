@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { createTodo } from "../api/todo";
-import TodoList from "./todo-list";
 
-const CreateTodo = ({ fetchtodos,setShowForm}) => {
+const CreateTodo = ({ fetchtodos, setShowCreateForm }) => {
   const initialState = {
     title: "",
     description: "",
@@ -34,7 +33,7 @@ const CreateTodo = ({ fetchtodos,setShowForm}) => {
       if (response.success) {
         setFormData(initialState);
         fetchtodos();
-        setShowForm()
+        setShowCreateForm();
       }
     } catch (err) {
       console.log("err", err);
@@ -109,7 +108,7 @@ const CreateTodo = ({ fetchtodos,setShowForm}) => {
           <option value={false}> Pending </option>
         </select>
         <button type="submit">Create Todo</button>
-        <button onClick={() => setShowForm(false)}>cancel</button>
+        <button onClick={() => setShowCreateForm(false)}>cancel</button>
       </form>
     </>
   );

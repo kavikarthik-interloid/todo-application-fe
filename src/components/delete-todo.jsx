@@ -1,22 +1,21 @@
-import { DeleteTodo } from "../api/todo"
+import { DeleteTodo } from "../api/todo";
 
-const DeleteCurrentTodo = ({ singleData, fetchtodos, setIsDelete}) => {
-    const handleDelete = async (e) => {
-     const value = singleData.id;
+const DeleteCurrentTodo = ({ singleData, fetchtodos, setIsDelete }) => {
+  const handleDelete = async (e) => {
+    const value = singleData.id;
     //  console.log(value)
-      e.preventDefault();
-      try {
+    e.preventDefault();
+    try {
       const response = await DeleteTodo(value);
-    //   console.log(value, "adasd")
-    //   await DeleteCurrentTodo(value);
-      console.log(response)
+      //   console.log(value, "adasd")
+      //   await DeleteCurrentTodo(value);
+      console.log(response);
       fetchtodos();
       setIsDelete();
     } catch (error) {
       console.log(error, "error");
     }
   };
-
   return (
     <>
       <h2> DeleteTodo</h2>

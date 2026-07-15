@@ -2,14 +2,14 @@ import TodoList from "../components/todo-list";
 import CreateTodo from "../components/create-todo";
 import { useEffect, useState } from "react";
 import { getTodos } from "../api/todo";
-import UpdateTodo from "../components/update-todo";
+import CompletedTodoList from "../components/completed-todoList";
 
 const Home = () => {
-  const [showForm, setShowForm] = useState(false);
+  const [showCreateForm, setShowCreateForm] = useState(false);
   const [todoList, setTodoList] = useState([]);
 
   const handleForm = () => {
-    setShowForm(true);
+    setShowCreateForm(true);
   };
 
   const fetchtodos = async () => {
@@ -20,13 +20,19 @@ const Home = () => {
   useEffect(() => {
     fetchtodos();
   }, []);
+ 
+  const pendingTodo =  todoList.filter(todo => todo.completed === false);
+  const completedTodo =  todoList.filter(todo => todo.completed === true);
 
   return (
     <>
-      <button onClick={handleForm} > Create </button>
-      <TodoList todoList={todoList} fetchtodos={fetchtodos} />
+      <button onClick={handleForm}> Create </button>
+      <TodoList fetchtodos={fetchtodos} pendingTodo={pendingTodo} completedTodo={completedTodo} />
 
-      {showForm && <CreateTodo setShowForm={setShowForm} fetchtodos={fetchtodos} />}
+      {showCreateForm && (
+        <CreateTodo setShowCreateForm={setShowCreateForm} fetchtodos={fetchtodos}/>
+      )}
+        <CompletedTodoList completedTodo={completedTodo} />
     </>
   );
 };

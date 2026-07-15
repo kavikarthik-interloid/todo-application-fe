@@ -1,26 +1,32 @@
-import { useState, useEffect } from "react";
-import { getTodos } from "../api/todo";
+import { useState } from "react";
 import UpdateTodo from "../components/update-todo";
 import DeleteCurrentTodo from "../components/delete-todo";
-// import CreateTodo from "../components/create-todo";
+import CompleteTask from "../components/complete-task";
 
-const TodoList = ({ todoList, fetchtodos }) => {
+const TodoList = ({ pendingTodo, fetchtodos, completedTodo }) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [singleData, setSingleData] = useState();
   const [isDelete, setIsDelete] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
 
   const showUpdateForm = (todo) => {
     setIsUpdate(true);
     setSingleData(todo);
-    // console.log('todo', todo)
   };
+  
   const showDeleteForm = (todo) => {
     setIsDelete(true);
     setSingleData(todo);
   };
+
+  const showCompleteForm = (todo) => {
+    setIsComplete(true);
+    setSingleData(todo);
+  };
+
   return (
     <>
-      {todoList.map((item) => (
+      {pendingTodo.map((item) => (
         <div key={item.id}>
           <span>{item.title}</span>
           <span>{item.category}</span>
@@ -33,6 +39,9 @@ const TodoList = ({ todoList, fetchtodos }) => {
           <span>{item.completed === true ? "completed" : "pending"}</span>
           <button onClick={() => showUpdateForm(item)}> Update </button>
           <button onClick={() => showDeleteForm(item)}> Delete </button>
+          <button onClick={() => showCompleteForm(item)}>
+            Mark as Completed{" "}
+          </button>
         </div>
       ))}
       {isUpdate && (
@@ -47,6 +56,13 @@ const TodoList = ({ todoList, fetchtodos }) => {
           singleData={singleData}
           fetchtodos={fetchtodos}
           setIsDelete={setIsDelete}
+        />
+      )}
+      {isComplete && (
+        <CompleteTask
+          setIsComplete={setIsComplete}
+          singleData={singleData}
+          completedTodo={completedTodo}
         />
       )}
     </>

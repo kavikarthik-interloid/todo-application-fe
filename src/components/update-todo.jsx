@@ -5,24 +5,24 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
   const [updateData, setUpdateData] = useState(singleData);
 
   const handleChange = (e) => {
-    setUpdateData({
-      ...updateData,
+    setUpdateData((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
-    console.log(updateData);
+    }));
   };
+    console.log("updateData",updateData);
 
   const handleClick = async (e) => {
     e.preventDefault();
     const updated = {
       ...updateData,
       tags: updateData.tags.split(","),
-      completed: updateData.complete,
+      completed: !!updateData.completed,
     };
     // console.log("adwqad",updated)
     await updateTodo(updated.id, updated);
     fetchtodos();
-    setIsUpdate()
+    setIsUpdate();
   };
   return (
     <>
@@ -84,7 +84,7 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
         <label> Status </label>
         <select
           name="completed"
-          value={updateData.completed}
+          defaultValue={updateData.completed}
           id="completed"
           onChange={handleChange}
         >

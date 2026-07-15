@@ -6,7 +6,7 @@ export const getTodos = async () => {
         method: "GET",
         headers: {
           "content-type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
           "ngrok-skip-browser-warning": "true",
         },
       },
@@ -32,7 +32,7 @@ export const createTodo = async (todoData) => {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
           "ngrok-skip-browser-warning": "true",
         },
         body: JSON.stringify(todoData),
@@ -59,7 +59,7 @@ export const updateTodo = async (id, todoData) => {
         method: "PATCH",
         headers: {
           "content-type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
           "ngrok-skip-browser-warning": "true",
         },
         body: JSON.stringify(todoData),
@@ -85,7 +85,7 @@ export const DeleteTodo = async (id) => {
       {
         method: "DELETE",
         headers: {
-          "Accept": "application/json",
+          Accept: "application/json",
           "ngrok-skip-browser-warning": "true",
         },
       },
@@ -103,7 +103,7 @@ export const DeleteTodo = async (id) => {
   }
 };
 
-export const CompleteTodo = async (id) => {
+export const CompleteTodo = async (id, todoData) => {
   try {
     const response = await fetch(
       `https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos/${id}/status`,
@@ -111,9 +111,10 @@ export const CompleteTodo = async (id) => {
         method: "PATCH",
         headers: {
           "content-type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
           "ngrok-skip-browser-warning": "true",
         },
+        body: JSON.stringify(todoData),
       },
     );
     const CompleteTodo = await response.json();
