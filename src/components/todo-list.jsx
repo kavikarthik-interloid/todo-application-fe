@@ -1,8 +1,23 @@
 import { useState, useEffect } from "react";
 import { getTodos } from "../api/todo";
+import UpdateTodo from "../components/update-todo";
+import DeleteCurrentTodo from "../components/delete-todo";
 // import CreateTodo from "../components/create-todo";
 
-const TodoList = ({ todoList }) => {
+const TodoList = ({ todoList, fetchtodos }) => {
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [singleData, setSingleData] = useState();
+  const [isDelete, setIsDelete] = useState(false);
+
+  const showUpdateForm = (todo) => {
+    setIsUpdate(true);
+    setSingleData(todo);
+    // console.log('todo', todo)
+  };
+  const showDeleteForm = (todo) => {
+    setIsDelete(true);
+    setSingleData(todo);
+  };
   return (
     <>
       {todoList.map((item) => (
@@ -16,8 +31,24 @@ const TodoList = ({ todoList }) => {
             <span key={index}>{tag}</span>
           ))}
           <span>{item.completed === true ? "completed" : "pending"}</span>
+          <button onClick={() => showUpdateForm(item)}> Update </button>
+          <button onClick={() => showDeleteForm(item)}> Delete </button>
         </div>
       ))}
+      {isUpdate && (
+        <UpdateTodo
+          singleData={singleData}
+          fetchtodos={fetchtodos}
+          setIsUpdate={setIsUpdate}
+        />
+      )}
+      {isDelete && (
+        <DeleteCurrentTodo
+          singleData={singleData}
+          fetchtodos={fetchtodos}
+          setIsDelete={setIsDelete}
+        />
+      )}
     </>
   );
 };

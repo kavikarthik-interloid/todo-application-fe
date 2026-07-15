@@ -1,62 +1,45 @@
 import { useState } from "react";
-import { createTodo } from "../api/todo";
-import TodoList from "./todo-list";
+import { updateTodo } from "../api/todo";
 
-const CreateTodo = ({ fetchtodos,setShowForm}) => {
-  const initialState = {
-    title: "",
-    description: "",
-    due_date: "",
-    priority: "",
-    category: "",
-    tags: [],
-    completed: false,
-  };
-  const [formData, setFormData] = useState(initialState);
+const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
+  const [updateData, setUpdateData] = useState(singleData);
 
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
+    setUpdateData({
+      ...updateData,
       [e.target.name]: e.target.value,
-    }));
-    console.log(formData);
+    });
+    console.log(updateData);
   };
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const payload = {
-      ...formData,
-      tags: formData.tags.split(","),
-      completed: formData.completed,
+    const updated = {
+      ...updateData,
+      tags: updateData.tags.split(","),
+      completed: updateData.complete,
     };
-    try {
-      const response = await createTodo(payload);
-      if (response.success) {
-        setFormData(initialState);
-        fetchtodos();
-        setShowForm()
-      }
-    } catch (err) {
-      console.log("err", err);
-    }
+    // console.log("adwqad",updated)
+    await updateTodo(updated.id, updated);
+    fetchtodos();
+    setIsUpdate()
   };
-
   return (
     <>
-      <h2> Create-Todo</h2>
-      <form onSubmit={handleClick}>
+      <h2> Update-Todo</h2>
+      <form>
         <label> Title </label>
         <input
           name="title"
           placeholder="enter the title"
-          value={formData.title}
+          value={updateData.title}
           onChange={handleChange}
         />
 
         <label>description</label>
         <textarea
           name="description"
-          value={formData.description}
+          value={updateData.description}
           placeholder="enter the description"
           onChange={handleChange}
         />
@@ -64,7 +47,7 @@ const CreateTodo = ({ fetchtodos,setShowForm}) => {
         <label> due_date </label>
         <input
           name="due_date"
-          value={formData.due_date}
+          value={updateData.due_date}
           placeholder="enter the due_date"
           type="date"
           onChange={handleChange}
@@ -74,7 +57,7 @@ const CreateTodo = ({ fetchtodos,setShowForm}) => {
         <select
           name="priority"
           id="priority"
-          value={formData.priority}
+          value={updateData.priority}
           onChange={handleChange}
         >
           <option value="LOW">Low</option>
@@ -85,7 +68,7 @@ const CreateTodo = ({ fetchtodos,setShowForm}) => {
         <label>category</label>
         <input
           name="category"
-          value={formData.category}
+          value={updateData.category}
           placeholder="enter the category"
           onChange={handleChange}
         />
@@ -93,7 +76,7 @@ const CreateTodo = ({ fetchtodos,setShowForm}) => {
         <label>tags</label>
         <input
           name="tags"
-          value={formData.tags}
+          value={updateData.tags}
           placeholder="enter the tags"
           onChange={handleChange}
         />
@@ -101,18 +84,20 @@ const CreateTodo = ({ fetchtodos,setShowForm}) => {
         <label> Status </label>
         <select
           name="completed"
-          value={formData.completed}
+          value={updateData.completed}
           id="completed"
           onChange={handleChange}
         >
           <option value={true}> completed </option>
           <option value={false}> Pending </option>
         </select>
-        <button type="submit">Create Todo</button>
-        <button onClick={() => setShowForm(false)}>cancel</button>
+        <button type="submit" onClick={handleClick}>
+          {" "}
+          Update Todo{" "}
+        </button>
+        <button onClick={() => setIsUpdate(false)}> Cancel </button>
       </form>
     </>
   );
 };
-
-export default CreateTodo;
+export default UpdateTodo;
