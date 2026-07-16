@@ -1,18 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f4f3ef;
+  --color-paper: #faf9f5;
   --color-surface: #ffffff;
-  --color-surface-2: #faf9f6;
-  --color-line: #e9e6e0;
-  --color-line-strong: #dcd8d0;
+  --color-surface-2: #f4f2ec;
+  --color-line: #e8e5dd;
+  --color-line-strong: #d8d3c9;
 
   --color-ink: #211f1b;
-  --color-ink-2: #5c584f;
-  --color-ink-3: #948f85;
+  --color-ink-2: #57534b;
+  --color-ink-3: #736e64;
 
   --color-accent: #26221d;
   --color-accent-hover: #3a352e;
+  --color-accent-ink: #ffffff;
+
+  --color-toast: #26221d;
 
   --color-high: #cf4a3c;
   --color-high-soft: #fbe9e6;
@@ -22,8 +25,58 @@
   --color-low-soft: #e9eef7;
   --color-good: #2f9e6f;
   --color-good-soft: #e8f4ee;
+  --color-good-ink: #196142;
+  --color-tag: #3f7d6e;
+  --color-tag-soft: #e4f0ec;
+  --color-cat: #6a54b0;
+  --color-cat-soft: #ece7f8;
 
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
+}
+
+/* Light is the default; dark tokens are swapped in when the root carries
+   data-theme="dark" (set by the no-flash script in index.html and toggled
+   at runtime by <ThemeToggle>). */
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-paper: #121110;
+  --color-surface: #1e1d1a;
+  --color-surface-2: #262420;
+  --color-line: #322f2a;
+  --color-line-strong: #45413a;
+
+  --color-ink: #f4f1ea;
+  --color-ink-2: #bbb5ab;
+  --color-ink-3: #8b867d;
+
+  /* inverted primary: a warm cream fill with dark ink on top */
+  --color-accent: #efe7d7;
+  --color-accent-hover: #ffffff;
+  --color-accent-ink: #221e18;
+
+  --color-toast: #34302a;
+
+  /* base hues stay saturated enough for white-on-fill buttons, while the
+     soft variants become deep tints that sit under lighter chip text */
+  --color-high: #dd5a4a;
+  --color-high-soft: #3a2320;
+  --color-med: #d9a340;
+  --color-med-soft: #352b19;
+  --color-low: #86aae8;
+  --color-low-soft: #212a3a;
+  --color-good: #3aae80;
+  --color-good-soft: #14251c;
+  --color-good-ink: #37ad7b;
+  --color-tag: #6bb8a4;
+  --color-tag-soft: #182a26;
+  --color-cat: #b9a6ec;
+  --color-cat-soft: #241f30;
 }
 
 body {
@@ -40,5 +93,29 @@ body {
   from {
     opacity: 0;
     transform: translateY(10px) scale(0.98);
+  }
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+@keyframes toast-out {
+  to {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+}
+
+/* respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

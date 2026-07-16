@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { createTodo } from "../api/todo";
+import { useToast } from "./toast";
+import Modal from "./modal";
 
 const PRIORITIES = [
   { value: "LOW", label: "Low", dot: "bg-low" },
@@ -7,9 +9,14 @@ const PRIORITIES = [
   { value: "HIGH", label: "High", dot: "bg-high" },
 ];
 
-const labelCls = "text-xs font-semibold text-ink-2";
+const labelCls =
+  "text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3";
 const inputCls =
-  "w-full rounded-lg border border-line-strong bg-surface px-3 py-2.5 text-[13.5px] text-ink outline-none transition placeholder:text-ink-3 focus:border-ink-2 focus:ring-4 focus:ring-black/5";
+  "w-full border-0 border-b border-line-strong bg-transparent px-0 py-2 text-[14px] text-ink outline-none transition placeholder:text-ink-3 focus:border-ink";
+const cancelCls =
+  "text-[13.5px] text-ink-3 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25 focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-sm px-1";
+const submitCls =
+  "rounded-md bg-accent px-4 py-2.5 text-[13.5px] font-medium text-accent-ink transition hover:bg-accent-hover active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface";
 
 const CreateTodo = ({ fetchtodos, setIsCreate }) => {
   const initialState = {
@@ -22,8 +29,13 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
     completed: false,
   };
   const [formData, setFormData] = useState(initialState);
+  const [titleError, setTitleError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const toast = useToast();
+  const close = () => setIsCreate(false);
 
   const handleChange = (e) => {
+    if (e.target.name === "title" && titleError) setTitleError(false);
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -36,140 +48,168 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    if (!formData.title.trim()) {
+      setTitleError(true);
+      return;
+    }
     const payload = {
       ...formData,
+      title: formData.title.trim(),
       tags: formData.tags
         ? formData.tags.split(",").map((t) => t.trim()).filter(Boolean)
         : [],
       completed: formData.completed,
     };
     try {
+      setSubmitting(true);
       const response = await createTodo(payload);
-      if (response.success) {
+      if (response && response.success) {
         setFormData(initialState);
         fetchtodos();
-        setIsCreate(false);
+        close();
+        toast("Task added");
+      } else {
+        toast("Couldn’t add task", { variant: "error" });
       }
-    } catch (err) {
-      console.log("err", err);
+    } catch {
+      toast("Couldn’t add task", { variant: "error" });
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 px-5 pb-5 pt-[8vh] backdrop-blur-sm animate-[overlay-in_.16s_ease]"
-      onClick={() => setIsCreate(false)}
+    <Modal
+      onClose={close}
+      labelledBy="create-title"
+      describedBy="create-desc"
     >
-      <div
-        className="max-h-[84vh] w-full max-w-[460px] overflow-y-auto rounded-2xl border border-line bg-surface shadow-[0_10px_30px_-12px_rgba(35,31,25,0.22)] animate-[modal-in_.18s_cubic-bezier(.2,.7,.3,1)]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <form onSubmit={handleClick}>
-          <div className="px-6 pt-6">
-            <h2 className="text-lg font-semibold tracking-tight">New task</h2>
-            <p className="mt-1 text-[13px] text-ink-3">
-              Add something you need to get done.
-            </p>
+      <form onSubmit={handleClick}>
+        <div className="px-7 pt-7">
+          <h2
+            id="create-title"
+            className="font-serif text-[26px] font-normal tracking-[-0.01em] text-ink"
+          >
+            New task
+          </h2>
+          <p id="create-desc" className="mt-1 text-[13px] text-ink-3">
+            Add something you need to get done.
+          </p>
+        </div>
+
+        <div className="space-y-6 px-7 py-7">
+          <div className="flex flex-col gap-2">
+            <label className={labelCls} htmlFor="create-title-input">
+              Title
+            </label>
+            <input
+              id="create-title-input"
+              name="title"
+              placeholder="e.g. Send project proposal"
+              value={formData.title}
+              onChange={handleChange}
+              className={`${inputCls} ${titleError ? "border-high focus:border-high" : ""}`}
+              aria-invalid={titleError}
+              aria-describedby={titleError ? "create-title-error" : undefined}
+              autoFocus
+            />
+            {titleError && (
+              <span id="create-title-error" className="text-[12px] text-high">
+                Please enter a title for your task.
+              </span>
+            )}
           </div>
 
-          <div className="px-6 py-5">
-            <div className="mb-4 flex flex-col gap-1.5">
-              <label className={labelCls}>Title</label>
+          <div className="flex flex-col gap-2">
+            <label className={labelCls} htmlFor="create-desc-input">
+              Description
+            </label>
+            <textarea
+              id="create-desc-input"
+              name="description"
+              value={formData.description}
+              placeholder="Add notes or details (optional)"
+              onChange={handleChange}
+              className={`${inputCls} min-h-14 resize-y`}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2.5">
+            <span className={labelCls}>Priority</span>
+            <div className="flex gap-6" role="group" aria-label="Priority">
+              {PRIORITIES.map((p) => (
+                <button
+                  key={p.value}
+                  type="button"
+                  aria-pressed={formData.priority === p.value}
+                  onClick={() => setPriority(p.value)}
+                  className={`inline-flex items-center gap-1.5 border-b pb-1 text-[13.5px] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 ${
+                    formData.priority === p.value
+                      ? "border-ink font-medium text-ink"
+                      : "border-transparent text-ink-3 hover:text-ink-2"
+                  }`}
+                >
+                  <span className={`h-1.5 w-1.5 rounded-full ${p.dot}`} />
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-5">
+            <div className="flex flex-col gap-2">
+              <label className={labelCls} htmlFor="create-due">
+                Due date
+              </label>
               <input
-                name="title"
-                placeholder="e.g. Send project proposal"
-                value={formData.title}
-                onChange={handleChange}
-                className={inputCls}
-                autoFocus
-              />
-            </div>
-
-            <div className="mb-4 flex flex-col gap-1.5">
-              <label className={labelCls}>Description</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                placeholder="Add notes or details (optional)"
-                onChange={handleChange}
-                className={`${inputCls} min-h-16 resize-y`}
-              />
-            </div>
-
-            <div className="mb-4 flex flex-col gap-1.5">
-              <label className={labelCls}>Priority</label>
-              <div className="grid grid-cols-3 gap-1.5">
-                {PRIORITIES.map((p) => (
-                  <button
-                    key={p.value}
-                    type="button"
-                    onClick={() => setPriority(p.value)}
-                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-[12.5px] font-medium transition ${
-                      formData.priority === p.value
-                        ? "border-ink bg-surface-2 text-ink"
-                        : "border-line-strong bg-surface text-ink-2 hover:border-ink-3"
-                    }`}
-                  >
-                    <span className={`h-1.5 w-1.5 rounded-full ${p.dot}`} />
-                    {p.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="mb-4 grid grid-cols-2 gap-3">
-              <div className="flex flex-col gap-1.5">
-                <label className={labelCls}>Due date</label>
-                <input
-                  name="due_date"
-                  value={formData.due_date}
-                  type="date"
-                  onChange={handleChange}
-                  className={inputCls}
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label className={labelCls}>Category</label>
-                <input
-                  name="category"
-                  value={formData.category}
-                  placeholder="e.g. Work"
-                  onChange={handleChange}
-                  className={inputCls}
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-1.5">
-              <label className={labelCls}>Tags</label>
-              <input
-                name="tags"
-                value={formData.tags}
-                placeholder="Separate with commas"
+                id="create-due"
+                name="due_date"
+                value={formData.due_date}
+                type="date"
                 onChange={handleChange}
                 className={inputCls}
               />
             </div>
+            <div className="flex flex-col gap-2">
+              <label className={labelCls} htmlFor="create-category">
+                Category
+              </label>
+              <input
+                id="create-category"
+                name="category"
+                value={formData.category}
+                placeholder="e.g. Work"
+                onChange={handleChange}
+                className={inputCls}
+              />
+            </div>
           </div>
 
-          <div className="flex justify-end gap-2.5 border-t border-line px-6 py-5">
-            <button
-              type="button"
-              className="rounded-lg border border-line-strong bg-surface px-4 py-2.5 text-[13.5px] font-medium text-ink-2 transition hover:bg-surface-2 hover:text-ink"
-              onClick={() => setIsCreate(false)}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="rounded-lg bg-accent px-4 py-2.5 text-[13.5px] font-medium text-white transition hover:bg-accent-hover active:translate-y-px"
-            >
-              Add task
-            </button>
+          <div className="flex flex-col gap-2">
+            <label className={labelCls} htmlFor="create-tags">
+              Tags
+            </label>
+            <input
+              id="create-tags"
+              name="tags"
+              value={formData.tags}
+              placeholder="Separate with commas"
+              onChange={handleChange}
+              className={inputCls}
+            />
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+
+        <div className="flex items-center justify-end gap-4 border-t border-line px-7 py-5">
+          <button type="button" className={cancelCls} onClick={close}>
+            Cancel
+          </button>
+          <button type="submit" className={submitCls}>
+            Add task
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 };
 

@@ -9,6 +9,31 @@ const base = {
   strokeLinejoin: "round",
 };
 
+export const LogoIcon = (props) => (
+  <svg {...base} {...props}>
+    <path d="M11 6h9" />
+    <path d="M11 12h9" />
+    <path d="M11 18h9" />
+    <path d="M3.5 6l1 1 2-2" />
+    <path d="M3.5 12l1 1 2-2" />
+    <path d="M3.5 18l1 1 2-2" />
+  </svg>
+);
+
+export const RestoreIcon = (props) => (
+  <svg {...base} {...props}>
+    <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+    <path d="M3 3v5h5" />
+  </svg>
+);
+
+export const CloseIcon = (props) => (
+  <svg {...base} {...props}>
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
+
 export const PlusIcon = (props) => (
   <svg {...base} {...props}>
     <line x1="12" y1="5" x2="12" y2="19" />
@@ -51,5 +76,18 @@ export const TagIcon = (props) => (
   <svg {...base} {...props}>
     <path d="M20.59 13.41 13.42 20.6a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z" />
     <line x1="7" y1="7" x2="7.01" y2="7" />
+  </svg>
+);
+
+export const SunIcon = (props) => (
+  <svg {...base} {...props}>
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+  </svg>
+);
+
+export const MoonIcon = (props) => (
+  <svg {...base} {...props}>
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
   </svg>
 );
