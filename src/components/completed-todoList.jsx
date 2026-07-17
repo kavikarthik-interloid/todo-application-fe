@@ -13,7 +13,7 @@ const CompletedTodoList = ({ completedTodo, fetchtodos }) => {
       fetchtodos();
       toast(`“${todo.title}” moved back to to-do`);
     } catch {
-      toast("Couldn’t restore task", { variant: "error" });
+      toast("Couldn't restore task", { variant: "error" });
     }
   };
 

@@ -1,25 +1,19 @@
-import {useState} from "react"
-import LandingPage from "./pages/landing-page"
+import { useState } from "react";
+import LandingPage from "./pages/landing-page";
 import { ToastProvider } from "./components/toast";
-import Home from "./pages/home"
+import Home from "./pages/home";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("visited"));
 
-  const [isHome, setIsHome] = useState(false);
-  const [islandingPage, setIsLandingPage] = useState(true);
-
-  const showHome = () => {
-    setIsHome(true);
+  const handleLogin = () => {
+    localStorage.setItem("visited", "true");
+    setIsLoggedIn(true);
   };
-
-  const showLandingPage = () => {
-    setIsLandingPage(false)
-  }
 
   return (
     <ToastProvider>
-      {isHome && <Home showLandingPage={showLandingPage}/>}
-      {islandingPage && <LandingPage showHome={showHome}/>}
+      {isLoggedIn ? <Home /> : <LandingPage handleLogin={handleLogin} />}
     </ToastProvider>
   );
 }

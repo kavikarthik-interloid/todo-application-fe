@@ -33,7 +33,7 @@
 
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-system: system-ui
+  --font-system: system-ui;
 }
 
 /* Light is the default; dark tokens are swapped in when the root carries

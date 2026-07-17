@@ -9,7 +9,6 @@ import { CheckIcon, CloseIcon } from "./icons";
 
 const ToastContext = createContext(() => {});
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useToast = () => useContext(ToastContext);
 
 export const ToastProvider = ({ children }) => {
@@ -19,9 +18,7 @@ export const ToastProvider = ({ children }) => {
   const remove = useCallback((id) => {
     setToasts((list) => list.filter((t) => t.id !== id));
   }, []);
-
-  // Flag the toast as leaving so it plays the shrink-to-center fade, then
-  // drop it from the DOM once that animation has finished.
+  
   const dismiss = useCallback(
     (id) => {
       setToasts((list) =>

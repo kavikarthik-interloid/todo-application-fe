@@ -32,7 +32,7 @@ const SkeletonGrid = () => (
 const ErrorState = ({ onRetry }) => (
   <div className="mt-4 rounded-2xl border border-dashed border-line-strong bg-surface-2 px-6 py-16 text-center">
     <p className="font-serif text-xl italic text-ink-2">
-      Couldn’t load your tasks.
+      Couldn't load your tasks.
     </p>
     <p className="mt-1.5 text-[13px] text-ink-3">
       Please check your connection and try again.
@@ -46,7 +46,7 @@ const ErrorState = ({ onRetry }) => (
   </div>
 );
 
-const Home = ({showLandingPage}) => {
+const Home = () => {
   const [isCreate, setIsCreate] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,7 +60,6 @@ const Home = ({showLandingPage}) => {
     try {
       setError(false);
       const response = await getTodos();
-      showLandingPage()
       if (response && response.data && Array.isArray(response.data.items)) {
         setTodoList(response.data.items);
       } else {
@@ -98,7 +97,7 @@ const Home = ({showLandingPage}) => {
         : "No tasks yet — add your first one.";
 
   return (
-  <div className="mx-auto px-6 pb-28 sm:pt-24 flex flex-col">
+    <div className="mx-auto px-6 pb-28 pt-10 md:pt-14 flex flex-col">
       <header className="mb-12 max-w-8xl">
         <div className="flex items-center justify-between gap-6">
           <div>

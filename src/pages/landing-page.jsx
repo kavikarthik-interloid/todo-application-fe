@@ -1,11 +1,11 @@
 import Header from "../components/header";
 import HeroSection from "../components/hero-section";
 
-const LandingPage = ({showHome}) => {
+const LandingPage = ({ handleLogin }) => {
   return (
     <>
-      <Header showHome={showHome} />
-      <HeroSection showHome={showHome} />
+      <Header handleLogin={handleLogin} />
+      <HeroSection handleLogin={handleLogin} />
     </>
   );
 };

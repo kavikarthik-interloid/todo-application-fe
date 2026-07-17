@@ -12,8 +12,6 @@ const labelCls =
   "text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3";
 const inputCls =
   "w-full border-0 border-b border-line-strong bg-transparent px-0 py-2 text-[14px] text-ink outline-none transition placeholder:text-ink-3 focus:border-ink";
-const cancelCls =
-  "text-[13.5px] text-ink-3 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25 focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-sm px-1";
 
 const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
   const [updateData, setUpdateData] = useState({
@@ -164,7 +162,11 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
         </div>
 
         <div className="flex items-center justify-end gap-4 border-t border-line px-7 py-5">
-          <button type="button" className={cancelCls} onClick={close}>
+          <button
+            type="button"
+            className="text-[13.5px] text-ink-3 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25 focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-sm px-1"
+            onClick={close}
+          >
             Cancel
           </button>
           <button
