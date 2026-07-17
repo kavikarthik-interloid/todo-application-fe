@@ -5,7 +5,7 @@ const HeroSection = ({ handleLogin }) => {
   };
 
   return (
-    <div className="w-full h-full flex pt-40">
+    <div className="w-full h-full flex ">
       <div className="flex flex-col justify-center items-center text-center w-full px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="w-fit rounded-lg p-2 font-medium text-sm  md:text-md lg:text-lg xl:text-xl">
           <span className=" w-full font-sans font-bold ">
@@ -17,7 +17,7 @@ const HeroSection = ({ handleLogin }) => {
             Built for Smart Teams
           </span>
         </div>
-        <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-serif pt-4 font-bold">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-serif pt-4 font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#E6C687] via-[#FFF3B3] via-[#D4AF37] to-[#AA7C11]">
           Your Daily Tasks
           <br />
           Organized Effortlessly

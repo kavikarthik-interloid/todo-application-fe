@@ -28,6 +28,7 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
     tags: "",
     completed: false,
   };
+
   const [formData, setFormData] = useState(initialState);
   const [titleError, setTitleError] = useState(false);
   const [submitting, setSubmitting] = useState(false);

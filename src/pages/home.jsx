@@ -97,7 +97,7 @@ const Home = () => {
         : "No tasks yet — add your first one.";
 
   return (
-    <div className="mx-auto px-6 pb-28 pt-10 md:pt-14 flex flex-col">
+  <div className="mx-auto px-6 pb-28 pt-10 md:pt-14 flex flex-col bg-black/10">
       <header className="mb-12 max-w-8xl">
         <div className="flex items-center justify-between gap-6">
           <div>
