@@ -56,7 +56,10 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
       ...formData,
       title: formData.title.trim(),
       tags: formData.tags
-        ? formData.tags.split(",").map((t) => t.trim()).filter(Boolean)
+        ? formData.tags
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean)
         : [],
       completed: formData.completed,
     };
@@ -79,11 +82,7 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
   };
 
   return (
-    <Modal
-      onClose={close}
-      labelledBy="create-title"
-      describedBy="create-desc"
-    >
+    <Modal onClose={close} labelledBy="create-title" describedBy="create-desc">
       <form onSubmit={handleClick}>
         <div className="px-7 pt-7">
           <h2

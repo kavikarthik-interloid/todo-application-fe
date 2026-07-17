@@ -9,7 +9,7 @@ import ThemeToggle from "../components/theme-toggle";
 const SkeletonGrid = () => (
   <div>
     <div className="mb-4 mt-2 h-4 w-24 rounded bg-line" />
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-4 ">
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           key={i}
@@ -46,7 +46,7 @@ const ErrorState = ({ onRetry }) => (
   </div>
 );
 
-const Home = () => {
+const Home = ({showLandingPage}) => {
   const [isCreate, setIsCreate] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,6 +60,7 @@ const Home = () => {
     try {
       setError(false);
       const response = await getTodos();
+      showLandingPage()
       if (response && response.data && Array.isArray(response.data.items)) {
         setTodoList(response.data.items);
       } else {
@@ -97,8 +98,8 @@ const Home = () => {
         : "No tasks yet — add your first one.";
 
   return (
-    <div className="mx-auto max-w-5xl px-6 pb-28 pt-16 sm:pt-24">
-      <header className="mb-12">
+  <div className="mx-auto px-6 pb-28 sm:pt-24 flex flex-col">
+      <header className="mb-12 max-w-8xl">
         <div className="flex items-center justify-between gap-6">
           <div>
             <p className="mb-2 text-[12px] font-medium uppercase tracking-[0.18em] text-ink-3">
@@ -111,7 +112,7 @@ const Home = () => {
           <div className="flex shrink-0 items-center gap-2.5">
             <ThemeToggle />
             <button
-              className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-accent px-5 py-3 text-[14px] font-semibold text-accent-ink shadow-[0_4px_14px_-4px_rgba(38,34,29,0.5)] transition hover:bg-accent-hover hover:shadow-[0_6px_18px_-4px_rgba(38,34,29,0.55)] active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+              className="group inline-flex shrink-0 items-center gap-2 cursor-pointer rounded-full bg-accent px-5 py-3 text-[14px] font-semibold text-accent-ink shadow-[0_4px_14px_-4px_rgba(38,34,29,0.5)] transition hover:bg-accent-hover hover:shadow-[0_6px_18px_-4px_rgba(38,34,29,0.55)] active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
               onClick={handleForm}
             >
               <PlusIcon className="h-4 w-4 transition duration-300 group-hover:rotate-90" />
@@ -129,7 +130,7 @@ const Home = () => {
               <span className="font-serif italic text-ink">
                 {pendingTodo.length}
               </span>{" "}
-              {pendingTodo.length === 1 ? "task" : "tasks"} remaining
+              {pendingTodo.length === 1 ? "Task" : "Tasks"} Remaining
               <span className="mx-2 text-ink-3">·</span>
               <span className="text-ink-3">{pct}% complete</span>
             </p>

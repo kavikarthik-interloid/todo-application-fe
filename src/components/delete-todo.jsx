@@ -20,7 +20,8 @@ const DeleteCurrentTodo = ({ singleData, fetchtodos, setIsDelete }) => {
       onClose={close}
       labelledBy="delete-title"
       describedBy="delete-desc"
-      maxWidth="max-w-[420px]"
+      maxWidth="max-w-[450px]"
+      Position="absolute top-100"
     >
       <div className="px-7 pt-7">
         <h2
@@ -33,10 +34,8 @@ const DeleteCurrentTodo = ({ singleData, fetchtodos, setIsDelete }) => {
       <div className="px-7 py-6">
         <p id="delete-desc" className="text-[14px] leading-relaxed text-ink-2">
           Are you sure you want to delete{" "}
-          <strong className="font-medium text-ink">
-            “{singleData.title}”
-          </strong>
-          ? This action can’t be undone.
+          <bold className="font-bold text-ink">“{singleData.title}”</bold>? This
+          action can’t be undone.
         </p>
       </div>
       <div className="flex items-center justify-end gap-4 border-t border-line px-7 py-5">

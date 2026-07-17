@@ -14,8 +14,6 @@ const inputCls =
   "w-full border-0 border-b border-line-strong bg-transparent px-0 py-2 text-[14px] text-ink outline-none transition placeholder:text-ink-3 focus:border-ink";
 const cancelCls =
   "text-[13.5px] text-ink-3 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25 focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-sm px-1";
-const submitCls =
-  "rounded-md bg-accent px-4 py-2.5 text-[13.5px] font-medium text-accent-ink transition hover:bg-accent-hover active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface";
 
 const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
   const [updateData, setUpdateData] = useState({
@@ -42,7 +40,10 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
     const updated = {
       ...updateData,
       tags: updateData.tags
-        ? updateData.tags.split(",").map((t) => t.trim()).filter(Boolean)
+        ? updateData.tags
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean)
         : [],
       completed: !!updateData.completed,
     };
@@ -166,7 +167,10 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
           <button type="button" className={cancelCls} onClick={close}>
             Cancel
           </button>
-          <button type="submit" className={submitCls}>
+          <button
+            type="submit"
+            className="rounded-md bg-accent px-4 py-2.5 text-[13.5px] font-medium text-accent-ink transition hover:bg-accent-hover active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+          >
             Save changes
           </button>
         </div>

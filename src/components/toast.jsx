@@ -60,7 +60,9 @@ export const ToastProvider = ({ children }) => {
                 ? "animate-[toast-out_.22s_ease_forwards]"
                 : "animate-[toast-in_.2s_ease]"
             } ${
-              t.variant === "error" ? "bg-high text-white" : "bg-toast text-white"
+              t.variant === "error"
+                ? "bg-high text-white"
+                : "bg-toast text-white"
             }`}
           >
             {t.variant !== "error" && (

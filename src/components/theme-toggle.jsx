@@ -13,7 +13,6 @@ const ThemeToggle = () => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
-  // Keep following the OS until the user makes an explicit choice.
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const onChange = (e) => {
@@ -39,7 +38,7 @@ const ThemeToggle = () => {
       onClick={toggle}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       title={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-ink-2 transition hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line bg-surface cursor-pointer text-ink-2 transition hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
     >
       {isDark ? (
         <SunIcon className="h-[18px] w-[18px]" />

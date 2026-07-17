@@ -6,9 +6,24 @@ import { useToast } from "./toast";
 import { CheckIcon, EditIcon, TrashIcon, CalendarIcon, TagIcon } from "./icons";
 
 const PRIO = {
-  high: { chip: "bg-high-soft text-high", dot: "bg-high", label: "High", edge: "var(--color-high)" },
-  medium: { chip: "bg-med-soft text-med", dot: "bg-med", label: "Medium", edge: "var(--color-med)" },
-  low: { chip: "bg-low-soft text-low", dot: "bg-low", label: "Low", edge: "var(--color-low)" },
+  high: {
+    chip: "bg-high-soft text-high",
+    dot: "bg-high",
+    label: "High",
+    edge: "var(--color-high)",
+  },
+  medium: {
+    chip: "bg-med-soft text-med",
+    dot: "bg-med",
+    label: "Medium",
+    edge: "var(--color-med)",
+  },
+  low: {
+    chip: "bg-low-soft text-low",
+    dot: "bg-low",
+    label: "Low",
+    edge: "var(--color-low)",
+  },
 };
 
 const formatDate = (value) => {
@@ -54,12 +69,12 @@ const TodoList = ({ pendingTodo, fetchtodos, today }) => {
             await CompleteTodo(todo.id, { completed: false });
             fetchtodos();
           } catch {
-            toast("Couldn’t undo — please try again", { variant: "error" });
+            toast("Couldn't undo — please try again", { variant: "error" });
           }
         },
       });
     } catch {
-      toast("Couldn’t complete task", { variant: "error" });
+      toast("Couldn't complete task", { variant: "error" });
     }
   };
 
@@ -77,9 +92,9 @@ const TodoList = ({ pendingTodo, fetchtodos, today }) => {
           Nothing left to do.
         </p>
       ) : (
-        <ul className="mt-4 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-4 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 2xl:gap-6">
           {pendingTodo.map((item) => {
-            const priority = (item.priority || "").toLowerCase();
+            const priority = item.priority.toLowerCase();
             const style = PRIO[priority];
             const overdue = isOverdue(item.due_date, today);
             return (
@@ -87,22 +102,22 @@ const TodoList = ({ pendingTodo, fetchtodos, today }) => {
                 key={item.id}
                 style={{
                   borderLeftColor: style?.edge || "var(--color-line-strong)",
-                  borderLeftWidth: "4px",
+                  borderLeftWidth: "6px",
                 }}
                 className="group relative flex flex-col rounded-2xl border border-line bg-surface p-5 shadow-[0_1px_2px_rgba(33,31,27,0.03),0_6px_16px_-10px_rgba(33,31,27,0.15)] transition duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-[0_12px_28px_-12px_rgba(33,31,27,0.22)]"
               >
-                {/* priority */}
                 {style && (
                   <div className="mb-2.5 flex justify-end">
                     <span
                       className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ${style.chip}`}
                     >
-                      <span className={`h-1.5 w-1.5 rounded-full ${style.dot}`} />
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full ${style.dot}`}
+                      />
                       {style.label}
                     </span>
                   </div>
                 )}
-
                 {/* title + description */}
                 <h3 className="text-[15.5px] font-semibold leading-snug tracking-[-0.01em] text-ink">
                   <span className="bg-linear-to-r from-ink to-ink bg-size-[0%_1.5px] bg-bottom-left bg-no-repeat pb-px transition-[background-size] duration-300 ease-out group-hover:bg-size-[100%_1.5px]">
@@ -155,7 +170,7 @@ const TodoList = ({ pendingTodo, fetchtodos, today }) => {
                   <button
                     onClick={() => handleComplete(item)}
                     aria-label={`Mark “${item.title}” as done`}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-good-soft px-3 py-1.5 text-[12.5px] font-semibold text-good-ink transition hover:bg-good-ink hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-good/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface"
+                    className="inline-flex items-center gap-1.5 cursor-pointer rounded-lg bg-good-soft px-3 py-1.5 text-[12.5px] font-semibold text-good-ink transition hover:bg-good-ink hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-good/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface"
                   >
                     <CheckIcon className="h-3.5 w-3.5" />
                     Mark done
@@ -163,7 +178,7 @@ const TodoList = ({ pendingTodo, fetchtodos, today }) => {
 
                   <div className=" flex items-center gap-0.5">
                     <button
-                      className="flex h-8 w-8 items-center justify-center rounded-lg text-ink-3 transition hover:bg-surface-2 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25 focus-visible:ring-offset-1 focus-visible:ring-offset-surface"
+                      className="flex h-8 w-8 items-center justify-center cursor-pointer rounded-lg text-ink-3 transition hover:bg-surface-2 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25 focus-visible:ring-offset-1 focus-visible:ring-offset-surface"
                       title="Edit"
                       aria-label={`Edit “${item.title}”`}
                       onClick={() => showUpdateForm(item)}
@@ -171,7 +186,7 @@ const TodoList = ({ pendingTodo, fetchtodos, today }) => {
                       <EditIcon className="h-4 w-4" />
                     </button>
                     <button
-                      className="flex h-8 w-8 items-center justify-center rounded-lg text-ink-3 transition hover:bg-high-soft hover:text-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-high/40 focus-visible:ring-offset-1 focus-visible:ring-offset-surface"
+                      className="flex h-8 w-8 items-center justify-center cursor-pointer rounded-lg text-ink-3 transition hover:bg-high-soft hover:text-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-high/40 focus-visible:ring-offset-1 focus-visible:ring-offset-surface"
                       title="Delete"
                       aria-label={`Delete “${item.title}”`}
                       onClick={() => showDeleteForm(item)}

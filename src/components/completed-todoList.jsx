@@ -52,7 +52,7 @@ const CompletedTodoList = ({ completedTodo, fetchtodos }) => {
               onClick={() => handleRestore(item)}
               title="Move back to to-do"
               aria-label={`Move “${item.title}” back to to-do`}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ink-3 opacity-0 transition hover:bg-surface hover:text-ink focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25 group-hover:opacity-100 max-sm:opacity-100"
+              className="flex h-8 w-8 shrink-0 items-center justify-center cursor-pointer rounded-lg text-ink-3 opacity-0 transition hover:bg-surface hover:text-ink focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25 group-hover:opacity-100 max-sm:opacity-100"
             >
               <RestoreIcon className="h-4 w-4" />
             </button>
