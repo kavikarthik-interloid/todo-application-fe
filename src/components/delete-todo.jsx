@@ -1,15 +1,18 @@
-import { DeleteTodo } from "../api/todo";
+import { deleteTodo } from "../api/todo";
 import Modal from "./modal";
 
-const DeleteCurrentTodo = ({ singleData, fetchtodos, setIsDelete }) => {
-  const close = () => setIsDelete(false);
-
+const DeleteTodoConfirmation = ({ singleTodo, fetchTodos, setIsDeleteFormOpen }) => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      await DeleteTodo(singleData.id);
-      fetchtodos();
-      close();
+      await deleteTodo(singleTodo.id);
+      try {
+        const fetchResponse = fetchTodos();
+        setIsDeleteFormOpen(false);
+        return fetchResponse;
+      } catch (error) {
+        console.log("error", error);
+      }
     } catch (error) {
       console.log(error, "error");
     }
@@ -17,7 +20,7 @@ const DeleteCurrentTodo = ({ singleData, fetchtodos, setIsDelete }) => {
 
   return (
     <Modal
-      onClose={close}
+      onClose={() => setIsDeleteFormOpen(false)}
       labelledBy="delete-title"
       describedBy="delete-desc"
       maxWidth="max-w-[450px]"
@@ -33,15 +36,15 @@ const DeleteCurrentTodo = ({ singleData, fetchtodos, setIsDelete }) => {
       </div>
       <div className="px-7 py-6">
         <p id="delete-desc" className="text-[14px] leading-relaxed text-ink-2">
-          Are you sure you want to delete{" "}
-          <bold className="font-bold text-ink">“{singleData.title}”</bold>? This
-          action can’t be undone.
+          Are you sure you want to delete
+          <strong className="font-bold text-ink">“{singleTodo.title}”</strong>?
+          This action can’t be undone.
         </p>
       </div>
       <div className="flex items-center justify-end gap-4 border-t border-line px-7 py-5">
         <button
           className="rounded-sm px-1 text-[13.5px] text-ink-3 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-          onClick={close}
+          onClick={() => setIsDeleteFormOpen(false)}
           autoFocus
         >
           Cancel
@@ -57,4 +60,4 @@ const DeleteCurrentTodo = ({ singleData, fetchtodos, setIsDelete }) => {
   );
 };
 
-export default DeleteCurrentTodo;
+export default DeleteTodoConfirmation;

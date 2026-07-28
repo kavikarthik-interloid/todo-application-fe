@@ -18,11 +18,11 @@ const cancelCls =
 const submitCls =
   "rounded-md bg-accent px-4 py-2.5 text-[13.5px] font-medium text-accent-ink transition hover:bg-accent-hover active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface";
 
-const CreateTodo = ({ fetchtodos, setIsCreate }) => {
+const NewTodo = ({ fetchTodos, setIsCreateFormOpen }) => {
   const initialState = {
     title: "",
     description: "",
-    due_date: "",
+    dueDate: "",
     priority: "MEDIUM",
     category: "",
     tags: "",
@@ -31,9 +31,7 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
 
   const [formData, setFormData] = useState(initialState);
   const [titleError, setTitleError] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const toast = useToast();
-  const close = () => setIsCreate(false);
 
   const handleChange = (e) => {
     if (e.target.name === "title" && titleError) setTitleError(false);
@@ -47,7 +45,7 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
     setFormData((prev) => ({ ...prev, priority: value }));
   };
 
-  const handleClick = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title.trim()) {
       setTitleError(true);
@@ -65,26 +63,28 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
       completed: formData.completed,
     };
     try {
-      setSubmitting(true);
       const response = await createTodo(payload);
       if (response && response.success) {
         setFormData(initialState);
-        fetchtodos();
-        close();
+        try {
+          const fetchResponse = await fetchTodos();
+          setIsCreateFormOpen(false);
+          return fetchResponse;
+        } catch (error) {
+          console.log("error", error);
+        }
         toast("Task added");
       } else {
         toast("Couldn’t add task", { variant: "error" });
       }
     } catch {
       toast("Couldn’t add task", { variant: "error" });
-    } finally {
-      setSubmitting(false);
     }
   };
 
   return (
-    <Modal onClose={close} labelledBy="create-title" describedBy="create-desc">
-      <form onSubmit={handleClick}>
+    <Modal onClose={() => setIsCreate(false)} labelledBy="create-title" describedBy="create-desc">
+      <form onSubmit={handleSubmit}>
         <div className="px-7 pt-7">
           <h2
             id="create-title"
@@ -163,12 +163,20 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
               </label>
               <input
                 id="create-due"
-                name="due_date"
-                value={formData.due_date}
+                name="dueDate"
+                value={formData.dueDate}
                 type="date"
                 onChange={handleChange}
-                className={inputCls}
+                className={`${inputCls} ${titleError ? "border-high focus:border-high" : ""}`}
+                aria-invalid={titleError}
+                aria-describedby={titleError ? "create-title-error" : undefined}
+                autoFocus
               />
+              {titleError && (
+                <span id="create-title-error" className="text-[12px] text-high">
+                  Please enter date for your task.
+                </span>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <label className={labelCls} htmlFor="create-category">
@@ -201,7 +209,11 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
         </div>
 
         <div className="flex items-center justify-end gap-4 border-t border-line px-7 py-5">
-          <button type="button" className={cancelCls} onClick={close}>
+          <button
+            type="button"
+            className={cancelCls}
+            onClick={() => setIsCreateFormOpen(false)}
+          >
             Cancel
           </button>
           <button type="submit" className={submitCls}>
@@ -213,4 +225,4 @@ const CreateTodo = ({ fetchtodos, setIsCreate }) => {
   );
 };
 
-export default CreateTodo;
+export default NewTodo;

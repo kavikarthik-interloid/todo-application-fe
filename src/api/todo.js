@@ -1,24 +1,22 @@
+import { BASE_URL, DEFAULT_HEADERS } from "../api/config";
+
 export const getTodos = async () => {
   try {
     const response = await fetch(
-      "https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos?page=1&limit=20&sort_by=created_at&sort_order=desc",
+      `${BASE_URL}/?page=1&limit=20&sort_by=created_at&sort_order=desc`,
       {
         method: "GET",
-        headers: {
-          "content-type": "application/json",
-          Accept: "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
+        headers: DEFAULT_HEADERS,
       },
     );
-    const listData = await response.json();
+    const getResponse = await response.json();
     if (!response.ok) {
       return {
         success: false,
-        message: "failed to get Data",
+        message: "Failed to get data",
       };
     }
-    return listData;
+    return getResponse;
   } catch (error) {
     console.log(error, "error");
   }
@@ -26,26 +24,19 @@ export const getTodos = async () => {
 
 export const createTodo = async (todoData) => {
   try {
-    const response = await fetch(
-      "https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos",
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          Accept: "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
-        body: JSON.stringify(todoData),
-      },
-    );
-    const createData = await response.json();
+    const response = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: DEFAULT_HEADERS,
+      body: JSON.stringify(todoData),
+    });
+    const createResponse = await response.json();
     if (!response.ok) {
       return {
         success: false,
-        message: "failed to get Data",
+        message: "Failed to get data",
       };
     }
-    return createData;
+    return createResponse;
   } catch (error) {
     console.log(error, "error");
   }
@@ -53,78 +44,58 @@ export const createTodo = async (todoData) => {
 
 export const updateTodo = async (id, todoData) => {
   try {
-    const response = await fetch(
-      `https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos/${id}`,
-      {
-        method: "PATCH",
-        headers: {
-          "content-type": "application/json",
-          Accept: "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
-        body: JSON.stringify(todoData),
-      },
-    );
-    const updateTodo = await response.json();
+    const response = await fetch(`${BASE_URL}/${id}`, {
+      method: "PATCH",
+      headers: DEFAULT_HEADERS,
+      body: JSON.stringify(todoData),
+    });
+    const updateResponse = await response.json();
     if (!response.ok) {
       return {
         success: false,
-        message: "failed to get Data",
+        message: "Failed to get data",
       };
     }
-    return updateTodo;
+    return updateResponse;
   } catch (error) {
     console.log(error, "error");
   }
 };
 
-export const DeleteTodo = async (id) => {
+export const deleteTodo = async (id) => {
   try {
-    const response = await fetch(
-      `https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
-      },
-    );
-    const DeleteTodo = await response.json();
+    const response = await fetch(`${BASE_URL}/${id}`, {
+      method: "DELETE",
+      headers: DEFAULT_HEADERS,
+    });
+    const deleteResponse = await response.json();
     if (!response.ok) {
       return {
         success: false,
-        message: "failed to get Data",
+        message: "Failed to get data",
       };
     }
-    return DeleteTodo;
+    return deleteResponse;
   } catch (error) {
     console.log(error, "error");
   }
 };
 
-export const CompleteTodo = async (id, todoData) => {
+export const updateTodoStatus = async (id, todoData) => {
   try {
-    const response = await fetch(
-      `https://cavity-pasture-purely.ngrok-free.dev/api/v1/todos/${id}/status`,
-      {
-        method: "PATCH",
-        headers: {
-          "content-type": "application/json",
-          Accept: "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
-        body: JSON.stringify(todoData),
-      },
-    );
-    const CompleteTodo = await response.json();
+    const response = await fetch(`${BASE_URL}/${id}/status`, {
+      method: "PATCH",
+      headers: DEFAULT_HEADERS,
+      body: JSON.stringify(todoData),
+    });
+    const updateStatusResponse = await response.json();
     if (!response.ok) {
       return {
         success: false,
-        message: "failed to get Data",
+        message: "Failed to get data",
       };
     }
-    return CompleteTodo;
+    return updateStatusResponse;
   } catch (error) {
     console.log(error, "error");
   }

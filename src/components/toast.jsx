@@ -18,7 +18,7 @@ export const ToastProvider = ({ children }) => {
   const remove = useCallback((id) => {
     setToasts((list) => list.filter((t) => t.id !== id));
   }, []);
-  
+
   const dismiss = useCallback(
     (id) => {
       setToasts((list) =>
@@ -44,7 +44,7 @@ export const ToastProvider = ({ children }) => {
     <ToastContext.Provider value={toast}>
       {children}
       <div
-        className="pointer-events-none fixed inset-x-0 bottom-0 z-[60] flex flex-col items-center gap-2 p-4"
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-60 flex flex-col items-center gap-2 p-4"
         aria-live="polite"
         aria-atomic="true"
       >

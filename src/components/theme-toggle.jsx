@@ -41,9 +41,9 @@ const ThemeToggle = () => {
       className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line bg-surface cursor-pointer text-ink-2 transition hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
     >
       {isDark ? (
-        <SunIcon className="h-[18px] w-[18px]" />
+        <SunIcon className="h-4.5 w-4.5" />
       ) : (
-        <MoonIcon className="h-[18px] w-[18px]" />
+        <MoonIcon className="h-4.5 w-4.5" />
       )}
     </button>
   );

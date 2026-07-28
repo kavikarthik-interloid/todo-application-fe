@@ -13,14 +13,13 @@ const labelCls =
 const inputCls =
   "w-full border-0 border-b border-line-strong bg-transparent px-0 py-2 text-[14px] text-ink outline-none transition placeholder:text-ink-3 focus:border-ink";
 
-const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
+const UpdateTodoData = ({ singleTodo, fetchTodos, setIsUpdateFormOpen }) => {
   const [updateData, setUpdateData] = useState({
-    ...singleData,
-    tags: Array.isArray(singleData.tags)
-      ? singleData.tags.join(", ")
-      : singleData.tags || "",
+    ...singleTodo,
+    tags: Array.isArray(singleTodo.tags)
+      ? singleTodo.tags.join(", ")
+      : singleTodo.tags || "",
   });
-  const close = () => setIsUpdate(false);
 
   const handleChange = (e) => {
     setUpdateData((prev) => ({
@@ -33,7 +32,7 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
     setUpdateData((prev) => ({ ...prev, priority: value }));
   };
 
-  const handleClick = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const updated = {
       ...updateData,
@@ -46,13 +45,18 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
       completed: !!updateData.completed,
     };
     await updateTodo(updated.id, updated);
-    fetchtodos();
-    close();
+    try{
+      const fetchResponse = await fetchTodos();
+      setIsUpdateFormOpen(false);
+      return fetchResponse
+    }catch(error){
+      console.log('error', error)
+    }
   };
 
   return (
-    <Modal onClose={close} labelledBy="edit-title" describedBy="edit-desc">
-      <form onSubmit={handleClick}>
+    <Modal onClose={() => setIsUpdateFormOpen(false)} labelledBy="edit-title" describedBy="edit-desc">
+      <form onSubmit={handleSubmit}>
         <div className="px-7 pt-7">
           <h2
             id="edit-title"
@@ -165,7 +169,7 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
           <button
             type="button"
             className="text-[13.5px] text-ink-3 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25 focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-sm px-1"
-            onClick={close}
+            onClick={() => setIsUpdateFormOpen(false)}
           >
             Cancel
           </button>
@@ -180,4 +184,4 @@ const UpdateTodo = ({ singleData, fetchtodos, setIsUpdate }) => {
     </Modal>
   );
 };
-export default UpdateTodo;
+export default UpdateTodoData;

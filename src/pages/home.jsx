@@ -1,5 +1,5 @@
 import TodoList from "../components/todo-list";
-import CreateTodo from "../components/create-todo";
+import NewTodo from "../components/create-todo";
 import { useEffect, useState } from "react";
 import { getTodos } from "../api/todo";
 import CompletedTodoList from "../components/completed-todoList";
@@ -47,16 +47,16 @@ const ErrorState = ({ onRetry }) => (
 );
 
 const Home = () => {
-  const [isCreate, setIsCreate] = useState(false);
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const handleForm = () => {
-    setIsCreate(true);
+  const handleClick = () => {
+    setIsCreateFormOpen(true);
   };
 
-  const fetchtodos = async () => {
+  const fetchTodos = async () => {
     try {
       setError(false);
       const response = await getTodos();
@@ -73,15 +73,15 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchtodos();
+    fetchTodos();
   }, []);
 
-  const pendingTodo = todoList.filter((todo) => todo.completed === false);
-  const completedTodo = todoList.filter((todo) => todo.completed === true);
+  const pendingTodos = todoList.filter((todo) => todo.completed === false);
+  const completedTodos = todoList.filter((todo) => todo.completed === true);
 
   const today = new Date();
   const total = todoList.length;
-  const pct = total ? Math.round((completedTodo.length / total) * 100) : 0;
+  const pct = total ? Math.round((completedTodos.length / total) * 100) : 0;
   const dateLabel = today.toLocaleDateString(undefined, {
     weekday: "long",
     day: "numeric",
@@ -97,7 +97,7 @@ const Home = () => {
         : "No tasks yet — add your first one.";
 
   return (
-  <div className="mx-auto px-6 pb-28 pt-10 md:pt-14 flex flex-col bg-black/10">
+    <div className="mx-auto px-6 pb-28 pt-10 md:pt-14 flex flex-col bg-black/10">
       <header className="mb-12 max-w-8xl">
         <div className="flex items-center justify-between gap-6">
           <div>
@@ -112,7 +112,7 @@ const Home = () => {
             <ThemeToggle />
             <button
               className="group inline-flex shrink-0 items-center gap-2 cursor-pointer rounded-full bg-accent px-5 py-3 text-[14px] font-semibold text-accent-ink shadow-[0_4px_14px_-4px_rgba(38,34,29,0.5)] transition hover:bg-accent-hover hover:shadow-[0_6px_18px_-4px_rgba(38,34,29,0.55)] active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
-              onClick={handleForm}
+              onClick={handleClick}
             >
               <PlusIcon className="h-4 w-4 transition duration-300 group-hover:rotate-90" />
               New task
@@ -127,9 +127,9 @@ const Home = () => {
           !error && (
             <p className="mt-6 text-[14px] text-ink-2">
               <span className="font-serif italic text-ink">
-                {pendingTodo.length}
-              </span>{" "}
-              {pendingTodo.length === 1 ? "Task" : "Tasks"} Remaining
+                {pendingTodos.length}
+              </span>
+              {pendingTodos.length === 1 ? "Task" : "Tasks"} Remaining
               <span className="mx-2 text-ink-3">·</span>
               <span className="text-ink-3">{pct}% complete</span>
             </p>
@@ -140,23 +140,23 @@ const Home = () => {
       {isLoading ? (
         <SkeletonGrid />
       ) : error ? (
-        <ErrorState onRetry={fetchtodos} />
+        <ErrorState onRetry={fetchTodos} />
       ) : (
         <>
           <TodoList
-            fetchtodos={fetchtodos}
-            pendingTodo={pendingTodo}
+            fetchTodos={fetchTodos}
+            pendingTodos={pendingTodos}
             today={today}
           />
           <CompletedTodoList
-            completedTodo={completedTodo}
-            fetchtodos={fetchtodos}
+            completedTodos={completedTodos}
+            fetchTodos={fetchTodos}
           />
         </>
       )}
 
-      {isCreate && (
-        <CreateTodo setIsCreate={setIsCreate} fetchtodos={fetchtodos} />
+      {isCreateFormOpen && (
+        <NewTodo setIsCreateFormOpen={setIsCreateFormOpen} fetchTodos={fetchTodos} />
       )}
     </div>
   );
