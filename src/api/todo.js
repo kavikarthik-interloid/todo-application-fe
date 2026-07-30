@@ -5,7 +5,7 @@ export const getTodos = async () => {
     const { data, error } = await supabase
       .from("todos")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("id", { ascending: false });
     if (error) {
       throw error;
     }
@@ -29,11 +29,13 @@ export const createTodo = async (todoData) => {
 };
 
 export const updateTodo = async (id, todoData) => {
+  const { id:cid, ...updatedData} = todoData
   const { data, error } = await supabase
     .from("todos")
-    .update(todoData)
+    .update(updatedData)
     .eq("id", id)
-    .select();
+    .select()
+    .order("id", { ascending: false });
   if (error) {
     throw error;
   }
