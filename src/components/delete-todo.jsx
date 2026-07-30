@@ -1,20 +1,19 @@
 import { deleteTodo } from "../api/todo";
+import { useToast } from "./toast";
 import Modal from "./modal";
 
 const DeleteTodoConfirmation = ({ singleTodo, fetchTodos, setIsDeleteFormOpen }) => {
+  const toast = useToast();
+
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
       await deleteTodo(singleTodo.id);
-      try {
-        const fetchResponse = fetchTodos();
-        setIsDeleteFormOpen(false);
-        return fetchResponse;
-      } catch (error) {
-        console.log("error", error);
-      }
-    } catch (error) {
-      console.log(error, "error");
+      await fetchTodos();
+      setIsDeleteFormOpen(false);
+      toast("Task deleted");
+    } catch {
+      toast("Couldn't delete task", { variant: "error" });
     }
   };
 

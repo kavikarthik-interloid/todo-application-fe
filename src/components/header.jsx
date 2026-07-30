@@ -21,7 +21,7 @@ const Header = ({ handleLogin }) => {
           <button className={styles}> Resources </button>
         </div>
         <button
-          className="rounded-lg bg-gray-800 px-5 py-2 text-white transition duration-200 shadow-[0_1px_2px_rgba(33,31,27,0.03),0_6px_16px_-10px_rgba(33,31,27,0.15)] hover:-translate-y-0.5 hover:border-line-strong hover:shadow-[0_12px_28px_-12px_rgba(33,31,27,0.22)] group"
+          className="rounded-lg bg-gray-800 px-3 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base lg:px-5 lg:py-3 text-white transition duration-200 shadow-[0_1px_2px_rgba(33,31,27,0.03),0_6px_16px_-10px_rgba(33,31,27,0.15)] hover:-translate-y-0.5 hover:border-line-strong hover:shadow-[0_12px_28px_-12px_rgba(33,31,27,0.22)] group"
           onClick={getStarted}
         >
           <span className={goldHover}>Get Started</span>

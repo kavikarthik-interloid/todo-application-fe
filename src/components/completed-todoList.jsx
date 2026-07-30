@@ -15,13 +15,13 @@ const completedTodosList = ({ completedTodos, fetchTodos }) => {
           </span>
         </h2>
 
-        <p className="mb-1 mt-14 font-serif text-2xl italic text-center  text-ink-2">
+        <p className="mb-1 mt-14 font-serif text-2xl italic text-center text-ink-2">
           There are no completed todos yet.
         </p>
       </div>
     );
 
-  const handleRestore = async (todo) => {
+  const handleRestore = async(todo) => {
     try {
       const response = await updateTodoStatus(todo.id, { completed: false });
       try {
@@ -46,7 +46,7 @@ const completedTodosList = ({ completedTodos, fetchTodos }) => {
         </span>
       </h2>
 
-      <ul className="mt-4 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-4 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {completedTodos.map((completedTodo) => (
           <li
             key={completedTodo.id}

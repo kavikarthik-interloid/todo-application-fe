@@ -61,23 +61,13 @@ const TodoList = ({ pendingTodos, fetchTodos, today }) => {
   const handleComplete = async (todo) => {
     try {
       await updateTodoStatus(todo.id, { completed: true });
-      try {
-        const response = await fetchTodos();
-        return response;
-      } catch (error) {
-        console.log("error", error);
-      }
+      await fetchTodos();
       toast(`“${todo.title}” completed`, {
         actionLabel: "Undo",
         onAction: async () => {
           try {
             await updateTodoStatus(todo.id, { completed: false });
-            try {
-              const fetchResponse = await fetchTodos();
-              return fetchResponse;
-            } catch (error) {
-              console.log("error", error);
-            }
+            await fetchTodos();
           } catch {
             toast("Couldn't undo — please try again", { variant: "error" });
           }

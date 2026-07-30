@@ -60,8 +60,8 @@ const Home = () => {
     try {
       setError(false);
       const response = await getTodos();
-      if (response && response.data && Array.isArray(response.data.items)) {
-        setTodoList(response.data.items);
+      if (response) {
+        setTodoList(response);
       } else {
         setError(true);
       }
@@ -97,9 +97,29 @@ const Home = () => {
         : "No tasks yet — add your first one.";
 
   return (
-    <div className="mx-auto px-6 pb-28 pt-10 md:pt-14 flex flex-col bg-black/10">
-      <header className="mb-12 max-w-8xl">
-        <div className="flex items-center justify-between gap-6">
+    <div
+      className="
+    mx-auto
+    w-full
+    min-h-screen
+    px-4
+    sm:px-6
+    md:px-8
+    lg:px-10
+    xl:px-16
+    pt-8
+    md:pt-12
+    lg:pt-16
+    pb-20
+    md:pb-24
+    lg:pb-28
+    flex
+    flex-col
+    bg-black/10
+  "
+    >
+      <header className="mb-12 w-full">
+        <div className="flex w-full items-center justify-between gap-6">
           <div>
             <p className="mb-2 text-[12px] font-medium uppercase tracking-[0.18em] text-ink-3">
               {dateLabel}
@@ -108,7 +128,7 @@ const Home = () => {
               Tasks
             </h1>
           </div>
-          <div className="flex shrink-0 items-center gap-2.5">
+          <div className="flex flex-col mobile:flex-row shrink-0 items-center gap-2.5">
             <ThemeToggle />
             <button
               className="group inline-flex shrink-0 items-center gap-2 cursor-pointer rounded-full bg-accent px-5 py-3 text-[14px] font-semibold text-accent-ink shadow-[0_4px_14px_-4px_rgba(38,34,29,0.5)] transition hover:bg-accent-hover hover:shadow-[0_6px_18px_-4px_rgba(38,34,29,0.55)] active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
@@ -156,7 +176,10 @@ const Home = () => {
       )}
 
       {isCreateFormOpen && (
-        <NewTodo setIsCreateFormOpen={setIsCreateFormOpen} fetchTodos={fetchTodos} />
+        <NewTodo
+          setIsCreateFormOpen={setIsCreateFormOpen}
+          fetchTodos={fetchTodos}
+        />
       )}
     </div>
   );

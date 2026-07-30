@@ -38,7 +38,7 @@ const ThemeToggle = () => {
       onClick={toggle}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       title={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line bg-surface cursor-pointer text-ink-2 transition hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+      className="flex h-11 w-11 shrink-0 items-center justify-center shadow-xl rounded-full border border-line bg-surface cursor-pointer text-ink-2 transition hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
     >
       {isDark ? (
         <SunIcon className="h-4.5 w-4.5" />

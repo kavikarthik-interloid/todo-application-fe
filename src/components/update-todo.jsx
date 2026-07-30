@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { updateTodo } from "../api/todo";
+import { useToast } from "./toast";
 import Modal from "./modal";
 
 const PRIORITIES = [
@@ -14,6 +15,7 @@ const inputCls =
   "w-full border-0 border-b border-line-strong bg-transparent px-0 py-2 text-[14px] text-ink outline-none transition placeholder:text-ink-3 focus:border-ink";
 
 const UpdateTodoData = ({ singleTodo, fetchTodos, setIsUpdateFormOpen }) => {
+  const toast = useToast();
   const [updateData, setUpdateData] = useState({
     ...singleTodo,
     tags: Array.isArray(singleTodo.tags)
@@ -44,13 +46,13 @@ const UpdateTodoData = ({ singleTodo, fetchTodos, setIsUpdateFormOpen }) => {
         : [],
       completed: !!updateData.completed,
     };
-    await updateTodo(updated.id, updated);
-    try{
-      const fetchResponse = await fetchTodos();
+    try {
+      await updateTodo(updated.id, updated);
+      await fetchTodos();
       setIsUpdateFormOpen(false);
-      return fetchResponse
-    }catch(error){
-      console.log('error', error)
+      toast("Task updated");
+    } catch {
+      toast("Couldn't update task", { variant: "error" });
     }
   };
 
@@ -78,7 +80,7 @@ const UpdateTodoData = ({ singleTodo, fetchTodos, setIsUpdateFormOpen }) => {
               id="edit-title-input"
               name="title"
               placeholder="Task title"
-              value={updateData.title}
+              value={updateData.title ?? ""}
               onChange={handleChange}
               className={inputCls}
               autoFocus
@@ -92,7 +94,7 @@ const UpdateTodoData = ({ singleTodo, fetchTodos, setIsUpdateFormOpen }) => {
             <textarea
               id="edit-desc-input"
               name="description"
-              value={updateData.description}
+              value={updateData.description  ?? ""}
               placeholder="Add notes or details (optional)"
               onChange={handleChange}
               className={`${inputCls} min-h-14 resize-y`}
@@ -129,7 +131,7 @@ const UpdateTodoData = ({ singleTodo, fetchTodos, setIsUpdateFormOpen }) => {
               <input
                 id="edit-due"
                 name="due_date"
-                value={updateData.due_date}
+                value={updateData.due_date ?? ""}
                 type="date"
                 onChange={handleChange}
                 className={inputCls}
@@ -142,7 +144,7 @@ const UpdateTodoData = ({ singleTodo, fetchTodos, setIsUpdateFormOpen }) => {
               <input
                 id="edit-category"
                 name="category"
-                value={updateData.category}
+                value={updateData.category ?? ""}
                 placeholder="e.g. Work"
                 onChange={handleChange}
                 className={inputCls}
@@ -157,7 +159,7 @@ const UpdateTodoData = ({ singleTodo, fetchTodos, setIsUpdateFormOpen }) => {
             <input
               id="edit-tags"
               name="tags"
-              value={updateData.tags}
+              value={updateData.tags ?? ""}
               placeholder="Separate with commas"
               onChange={handleChange}
               className={inputCls}

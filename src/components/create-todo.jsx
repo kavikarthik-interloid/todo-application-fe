@@ -30,11 +30,18 @@ const NewTodo = ({ fetchTodos, setIsCreateFormOpen }) => {
   };
 
   const [formData, setFormData] = useState(initialState);
-  const [titleError, setTitleError] = useState(false);
+  const [errors, setErrors] = useState({
+    title: false,
+    dueDate: false,
+  });
   const toast = useToast();
 
   const handleChange = (e) => {
-    if (e.target.name === "title" && titleError) setTitleError(false);
+    if (e.target.name === "title")
+      setErrors({
+        title: false,
+        dueDate: false,
+      });
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -47,13 +54,18 @@ const NewTodo = ({ fetchTodos, setIsCreateFormOpen }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title.trim()) {
-      setTitleError(true);
+    if (!formData.title.trim() || !formData.dueDate) {
+      setErrors({
+        title: !formData.title.trim(),
+        dueDate: !formData.dueDate,
+      });
       return;
     }
+    const { dueDate, ...rest } = formData;
     const payload = {
-      ...formData,
+       ...rest,
       title: formData.title.trim(),
+      due_date: dueDate,
       tags: formData.tags
         ? formData.tags
             .split(",")
@@ -64,8 +76,9 @@ const NewTodo = ({ fetchTodos, setIsCreateFormOpen }) => {
     };
     try {
       const response = await createTodo(payload);
-      if (response && response.success) {
+      if (response) {
         setFormData(initialState);
+        setErrors({ title: false, dueDate: false });
         try {
           const fetchResponse = await fetchTodos();
           setIsCreateFormOpen(false);
@@ -83,7 +96,11 @@ const NewTodo = ({ fetchTodos, setIsCreateFormOpen }) => {
   };
 
   return (
-    <Modal onClose={() => setIsCreate(false)} labelledBy="create-title" describedBy="create-desc">
+    <Modal
+      onClose={() => setIsCreateFormOpen(false)}
+      labelledBy="create-title"
+      describedBy="create-desc"
+    >
       <form onSubmit={handleSubmit}>
         <div className="px-7 pt-7">
           <h2
@@ -108,12 +125,12 @@ const NewTodo = ({ fetchTodos, setIsCreateFormOpen }) => {
               placeholder="e.g. Send project proposal"
               value={formData.title}
               onChange={handleChange}
-              className={`${inputCls} ${titleError ? "border-high focus:border-high" : ""}`}
-              aria-invalid={titleError}
-              aria-describedby={titleError ? "create-title-error" : undefined}
+              className={`${inputCls} ${errors.title ? "border-high focus:border-high" : ""}`}
+              aria-invalid={errors.title}
+              aria-describedby={errors.title ? "create-title-error" : undefined}
               autoFocus
             />
-            {titleError && (
+            {errors.title && (
               <span id="create-title-error" className="text-[12px] text-high">
                 Please enter a title for your task.
               </span>
@@ -167,13 +184,14 @@ const NewTodo = ({ fetchTodos, setIsCreateFormOpen }) => {
                 value={formData.dueDate}
                 type="date"
                 onChange={handleChange}
-                className={`${inputCls} ${titleError ? "border-high focus:border-high" : ""}`}
-                aria-invalid={titleError}
-                aria-describedby={titleError ? "create-title-error" : undefined}
-                autoFocus
+                className={`${inputCls} ${errors.dueDate ? "border-high focus:border-high" : ""}`}
+                aria-invalid={errors.dueDate}
+                aria-describedby={
+                  errors.dueDate ? "create-due-error" : undefined
+                }
               />
-              {titleError && (
-                <span id="create-title-error" className="text-[12px] text-high">
+              {errors.dueDate && (
+                <span id="create-due-error" className="text-[12px] text-high">
                   Please enter date for your task.
                 </span>
               )}
